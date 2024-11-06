@@ -167,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="terms">
                 <label>
                     <input type="checkbox" name="terms" required>
-                    Elfogadom az <a href="#">ÁSZF</a> (Általános Szerződési Feltételek) 
+                    Elfogadom az <a href="aszf.php">ÁSZF</a> (Általános Szerződési Feltételek) 
                 </label>
             </div>
             <div class="g-recaptcha" data-sitekey="6LfcE2wqAAAAAFwolQgILt5OParY_5OW12xyuUnE"></div>

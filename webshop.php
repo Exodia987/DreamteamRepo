@@ -165,6 +165,7 @@ if (isset($_COOKIE['auth_token'])) {
                         <li><a href="#products">Termékek</a></li>
                         <li><a href="#process">Folyamat</a></li>
                         <li><a href="#contact">Kapcsolat</a></li>
+                        <li><a href="aszf.php">Általános Szerződés</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
