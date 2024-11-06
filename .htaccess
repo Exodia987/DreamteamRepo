@@ -1,0 +1,6 @@
+RewriteEngine On
+
+RewriteRule ^digiprint$ webshop.php [L]
+RewriteRule ^bejelentkezes$ login.php [L]
+RewriteRule ^regisztracio$ register.php [L]
+RewriteRule ^aszf$ aszf.php [L]
