@@ -28,6 +28,7 @@ Ez a napló részletesen dokumentálja a projekten töltött időmet, a dátumok
 
 - [x] Webshop "skeletonja" :tada:
 - [x] Regisztráció és bejelentkező rendszer, cookie, Email küldés :tada:
+- [x] Termék feltöltése :tada:
 
 ## Dokumentációs szövegek
 
