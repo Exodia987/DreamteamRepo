@@ -22,182 +22,124 @@ if (isset($_COOKIE['auth_token'])) {
         $username = htmlspecialchars($user['username']);
     }
 }
+
+// Fetch products from database
+function getProducts($category = null) {
+    global $conn;
+    $sql = "SELECT * FROM products";
+    if ($category) {
+        $sql .= " WHERE category = ?";
+    }
+    $stmt = $conn->prepare($sql);
+    if ($category) {
+        $stmt->bind_param("s", $category);
+    }
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+$categories = ['Mice', 'Headsets', 'Keyboards', 'Monitors', 'Gaming PCs'];
 ?>
+
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digiprint - Az Ön Képzelete, A Mi Anyagunk</title>
+    <title>PixelForge - Premium Gaming Hardware</title>
     <link rel="stylesheet" href="webshop.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <script>
-        // Lágy gördülési hatás hozzáadása a belső linkekhez
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener("click", function(e) {
-                    e.preventDefault(); // Eredeti hivatkozás megakadályozása
-                    const target = document.querySelector(this.getAttribute("href"));
-                    if (target) {
-                        window.scrollTo({
-                            top: target.offsetTop,
-                            behavior: "smooth" // Lágy gördülési hatás
-                        });
-                    }
-                });
-            });
-        });
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<header>
-    <div class="container">
-        <h1>Digiprint</h1>
-        <nav>
-            <ul>
-                <li><a href="#hero">Főoldal</a></li>
-                <li><a href="#products">Termékek</a></li>
-                <li><a href="#process">Folyamat</a></li>
-                <li><a href="#contact">Kapcsolat</a></li>
-                <section id="auth-buttons">
-                    <div class="auth-container">
-                        <?php if ($username): ?>
-                            <div class="dropdown">
-                                <span style="cursor: pointer;"><?php echo $username; ?></span>
-                                <div class="dropdown-content">
-                                    <a href="profile.php">Profil módosítása</a>
-                                    <a href="logout.php">Kijelentkezés</a>
-                                </div>
-                            </div>
-                        <?php else: ?>
-                            <button onclick="window.location.href='bejelentkezes?ref=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>'">Bejelentkezés</button>
-                            <button onclick="window.location.href='regisztracio?ref=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>'">Regisztráció</button>
-                        <?php endif; ?>
-                    </div>
-                </section>
-            </ul>
-        </nav>
-    </div>
-</header>
-
-<main>
-    <section id="hero">
+    <header>
         <div class="container">
-            <h2>Az Ön Képzelete,<br>a Mi Anyagunk</h2>
-            <p>Alakítsa ötleteit hordható művészetté egyedi textilnyomtatásunkkal</p>
-            <a href="#products" class="cta-button">Kezdje el a Tervezést</a>
-        </div>
-    </section>
-
-    <section id="products">
-        <div class="container">
-            <h2>Canvas Kollekciónk</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="product-image" style="background-image: url('tshirt-placeholder.jpg');"></div>
-                    <h3>Pólók</h3>
-                    <p>Ár: 19,99$-tól</p>
-                    <a href="polo-testreszabas" class="product-button">Testreszabás</a>
-                </div>
-                <div class="product-card">
-                    <div class="product-image" style="background-image: url('hoodie-placeholder.jpg');"></div>
-                    <h3>Kapucnis Pulóverek</h3>
-                    <p>Ár: 39,99$-tól</p>
-                    <a href="#" class="product-button">Testreszabás</a>
-                </div>
-                <div class="product-card">
-                    <div class="product-image" style="background-image: url('bedding-placeholder.jpg');"></div>
-                    <h3>Ágynemű</h3>
-                    <p>Ár: 49,99$-tól</p>
-                    <a href="#" class="product-button">Testreszabás</a>
-                </div>
-                <div class="product-card">
-                    <div class="product-image" style="background-image: url('jersey-placeholder.jpg');"></div>
-                    <h3>Sportmez</h3>
-                    <p>Ár: 29,99$-tól</p>
-                    <a href="#" class="product-button">Testreszabás</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="process">
-        <div class="container">
-            <h2>Ötlettől a Megvalósításig</h2>
-            <div class="process-steps">
-                <div class="process-step">
-                    <div class="step-icon">1</div>
-                    <h3>Tervezés</h3>
-                    <p>Töltse fel műalkotását vagy használja online tervezőnket</p>
-                </div>
-                <div class="process-step">
-                    <div class="step-icon">2</div>
-                    <h3>Előnézet</h3>
-                    <p>Nézze meg tervét életre kelni 3D előnézetünkben</p>
-                </div>
-                <div class="process-step">
-                    <div class="step-icon">3</div>
-                    <h3>Nyomtatás</h3>
-                    <p>Élénk színekért modern nyomtatókat használunk</p>
-                </div>
-                <div class="process-step">
-                    <div class="step-icon">4</div>
-                    <h3>Kiszállítás</h3>
-                    <p>Az Ön egyedi alkotása közvetlenül az ajtóhoz kerül</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact">
-        <div class="container">
-            <h2>Alkossunk Együtt</h2>
-            <form action="process_form.php" method="POST">
-                <div class="form-group">
-                    <input type="text" name="name" placeholder="Az Ön Neve" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" name="email" placeholder="Az Ön E-mail címe" required>
-                </div>
-                <div class="form-group">
-                    <textarea name="message" placeholder="Meséljen nekünk projektjéről" required></textarea>
-                </div>
-                <button type="submit">Üzenet Küldése</button>
-            </form>
-        </div>
-    </section>
-</main>
-
-<footer>
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Digiprint</h3>
-                <p>Az Ön képzeletét kelti életre, egy nyomtatásban.</p>
-            </div>
-            <div class="footer-section">
-                <h3>Gyors Linkek</h3>
+            <h1>PixelForge</h1>
+            <nav>
                 <ul>
-                    <li><a href="#hero">Főoldal</a></li>
-                    <li><a href="#products">Termékek</a></li>
-                    <li><a href="#process">Folyamat</a></li>
-                    <li><a href="#contact">Kapcsolat</a></li>
-                    <li><a href="aszf">Általános Szerződés</a></li>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
                 </ul>
+            </nav>
+            <div class="auth-container">
+                <?php if ($username): ?>
+                    <div class="dropdown">
+                        <span><?php echo $username; ?></span>
+                        <div class="dropdown-content">
+                            <a href="profile.php">Edit Profile</a>
+                            <a href="logout.php">Logout</a>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <a href="login.php" class="btn">Login</a>
+                    <a href="register.php" class="btn">Register</a>
+                <?php endif; ?>
             </div>
-            <div class="footer-section">
-                <h3>Kapcsolódjon Velünk</h3>
-                <div class="social-icons">
-                    <a href="#" class="social-icon">FB</a>
-                    <a href="#" class="social-icon">IG</a>
-                    <a href="#" class="social-icon">TW</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <h2>Welcome to PixelForge</h2>
+                <p>Discover premium gaming hardware for the ultimate gaming experience.</p>
+                <a href="#products" class="btn">Shop Now</a>
+            </div>
+        </section>
+
+        <section id="products" class="products">
+            <div class="container">
+                <h2>Our Products</h2>
+                <div class="category-nav">
+                    <?php foreach ($categories as $category): ?>
+                        <a href="?category=<?php echo urlencode($category); ?>" class="btn"><?php echo $category; ?></a>
+                    <?php endforeach; ?>
+                </div>
+                <div class="product-grid">
+                    <?php
+                    $selectedCategory = isset($_GET['category']) ? $_GET['category'] : null;
+                    $products = getProducts($selectedCategory);
+                    foreach ($products as $product):
+                    ?>
+                        <div class="product-card">
+                            <img src="<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                            <h3><?php echo htmlspecialchars($product['name']); ?></h3>
+                            <p><?php echo htmlspecialchars($product['description']); ?></p>
+                            <span class="price">$<?php echo number_format($product['price'], 2); ?></span>
+                            <a href="add_to_cart.php?id=<?php echo $product['id']; ?>" class="btn">Add to Cart</a>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="container">
+                <h2>About PixelForge</h2>
+                <p>PixelForge is your one-stop shop for premium gaming hardware. We offer a curated selection of high-quality mice, headsets, keyboards, monitors, and gaming PCs to enhance your gaming experience.</p>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2>Contact Us</h2>
+                <form action="send_message.php" method="POST">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <textarea name="message" placeholder="Your Message" required></textarea>
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 PixelForge. All rights reserved.</p>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2023 Digiprint. Minden jog fenntartva.</p>
-        </div>
-    </div>
-</footer>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
