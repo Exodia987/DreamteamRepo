@@ -9,11 +9,12 @@ Ez a napló részletesen dokumentálja a projekten töltött időmet, a dátumok
 | 2024-11-11  | 1 óra     | A fiktív cég megalkotása, design-ja, hozzátartozó mock-up webshop elkészítése |
 | 2024-11-12  | 5 óra     | Webshop fejlesztése és séma megtervezése |
 | 2024-11-13  | 3 óra     | Megrendelő lap és back-end |
+| 2024-11-14  | 3 óra     | Termék oldala és shopping cart prot |
 
 
 ## Összesített idő
 
-Összesen eddig: **9 óra**
+Összesen eddig: **12 óra**
 
 ## Kiemelt célok
 

@@ -53,7 +53,8 @@ $categories = [
     ['name' => 'Fejhallgatók', 'icon' => 'headphones.png'],
     ['name' => 'Billentyűzetek', 'icon' => 'keyboard.png'],
     ['name' => 'Monitorok', 'icon' => 'monitor.png'],
-    ['name' => 'Gamer PC-k', 'icon' => 'pc.png']
+    ['name' => 'Gamer PC-k', 'icon' => 'pc.png'],
+    ['name' => 'Egérpadok', 'icon' => 'mousepad.png']  
 ];
 ?>
 
@@ -65,7 +66,7 @@ $categories = [
     <title>PixelForge - Prémium Gamer Hardverek</title>
     <link rel="stylesheet" href="webshop.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <header>
@@ -80,19 +81,29 @@ $categories = [
                     <li><a href="#contact">Kapcsolat</a></li>
                 </ul>
             </nav>
-            <div class="auth-container">
-                <?php if ($username): ?>
-                    <div class="dropdown">
-                        <span><?php echo $username; ?></span>
-                        <div class="dropdown-content">
-                            <a href="profile.php">Profil szerkesztése</a>
-                            <a href="logout.php">Kijelentkezés</a>
+            <div class="header-actions">
+                <form action="search.php" method="GET" class="search-form">
+                    <input type="text" name="q" placeholder="Keresés..." required>
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+                <a href="cart.php" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count"><?php echo isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0; ?></span>
+                </a>
+                <div class="auth-container">
+                    <?php if ($username): ?>
+                        <div class="dropdown">
+                            <span><?php echo $username; ?></span>
+                            <div class="dropdown-content">
+                                <a href="profile.php">Profil szerkesztése</a>
+                                <a href="logout.php">Kijelentkezés</a>
+                            </div>
                         </div>
-                    </div>
-                <?php else: ?>
-                    <a href="login.php" class="btn">Bejelentkezés</a>
-                    <a href="register.php" class="btn">Regisztráció</a>
-                <?php endif; ?>
+                    <?php else: ?>
+                        <a href="login.php" class="btn">Bejelentkezés</a>
+                        <a href="register.php" class="btn">Regisztráció</a>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
     </header>
@@ -107,53 +118,57 @@ $categories = [
         </section>
 
         <section id="products" class="products">
-    <div class="container">
-        <h2>Termékeink</h2>
-        <div class="category-nav">
-            <?php foreach ($categories as $category): ?>
-                <a href="?category=<?php echo urlencode($category['name']); ?>" class="btn category-btn">
-                    <img src="images/icons/<?php echo $category['icon']; ?>" alt="<?php echo $category['name']; ?>" class="category-icon">
-                    <?php echo $category['name']; ?>
-                </a>
-            <?php endforeach; ?>
-        </div>
-        <div class="product-grid">
-            <?php
-            $selectedCategory = isset($_GET['category']) ? $_GET['category'] : null;
-            $products = getProducts($selectedCategory);
-            foreach ($products as $product):
-            ?>
-                <div class="product-card">
-                    <img src="<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
-                    <h3><?php echo htmlspecialchars($product['name']); ?></h3>
-                    <span class="price"><?php echo number_format($product['price'], 0, ',', ' '); ?> Ft</span>
-                    <span class="stock-status"><?php echo $product['stock'] > 0 ? 'Készleten' : 'Nincs készleten'; ?></span>
-                    <a href="add_to_cart.php?id=<?php echo $product['id']; ?>" class="btn">Kosárba</a>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
-</section>
-
-        <section id="featured" class="featured">
-            <div class="container">
-                <h2>Kiemelt termékeink</h2>
-                <div class="product-grid">
-                    <?php
-                    $featuredProducts = getProducts(null, 4, true);
-                    foreach ($featuredProducts as $product):
-                    ?>
-                        <div class="product-card">
+        <div class="container">
+            <h2>Termékeink</h2>
+            <div class="category-nav">
+                <?php foreach ($categories as $category): ?>
+                    <a href="?category=<?php echo urlencode($category['name']); ?>" class="btn category-btn">
+                        <img src="images/icons/<?php echo $category['icon']; ?>" alt="<?php echo $category['name']; ?>" class="category-icon">
+                        <?php echo $category['name']; ?>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+            <div class="product-grid">
+                <?php
+                $selectedCategory = isset($_GET['category']) ? $_GET['category'] : null;
+                $products = getProducts($selectedCategory);
+                foreach ($products as $product):
+                ?>
+                    <div class="product-card">
+                        <a href="product.php?id=<?php echo $product['id']; ?>" class="product-link">
                             <img src="<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
                             <h3><?php echo htmlspecialchars($product['name']); ?></h3>
-                            <p><?php echo htmlspecialchars($product['description']); ?></p>
                             <span class="price"><?php echo number_format($product['price'], 0, ',', ' '); ?> Ft</span>
-                            <a href="add_to_cart.php?id=<?php echo $product['id']; ?>" class="btn">Kosárba</a>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
+                            <span class="stock-status"><?php echo $product['stock'] > 0 ? 'Készleten' : 'Nincs készleten'; ?></span>
+                        </a>
+                        <a href="add_to_cart.php?id=<?php echo $product['id']; ?>" class="btn">Kosárba</a>
+                    </div>
+                <?php endforeach; ?>
             </div>
-        </section>
+        </div>
+    </section>
+
+    <section id="featured" class="featured">
+        <div class="container">
+            <h2>Kiemelt termékeink</h2>
+            <div class="product-grid">
+                <?php
+                $featuredProducts = getProducts(null, 4, true);
+                foreach ($featuredProducts as $product):
+                ?>
+                    <div class="product-card">
+                        <a href="product.php?id=<?php echo $product['id']; ?>" class="product-link">
+                            <img src="<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                            <h3><?php echo htmlspecialchars($product['name']); ?></h3>
+                            <span class="price"><?php echo number_format($product['price'], 0, ',', ' '); ?> Ft</span>
+                            <span class="stock-status"><?php echo $product['stock'] > 0 ? 'Készleten' : 'Nincs készleten'; ?></span>
+                        </a>
+                        <a href="add_to_cart.php?id=<?php echo $product['id']; ?>" class="btn">Kosárba</a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
 
         <section id="about" class="about">
             <div class="container">
