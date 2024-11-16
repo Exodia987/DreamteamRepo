@@ -1,8 +1,5 @@
 <?php
-// Database connectio
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
+// Database connection
 $servername = "localhost";
 $dbUsername = "root";
 $dbPassword = "Keszenallok01!";
@@ -81,6 +78,20 @@ function getProducts($limit = null, $random = false, $category = null, $productI
     return array_values($products);
 }
 
+// Fetch categories
+function getCategories() {
+    global $conn;
+    $sql = "SELECT DISTINCT category FROM products ORDER BY category";
+    $result = $conn->query($sql);
+    $categories = array();
+    
+    while ($row = $result->fetch_assoc()) {
+        $categories[] = $row['category'];
+    }
+    
+    return $categories;
+}
+
 // Get cart items from cookie
 function getCartItems() {
     if (isset($_COOKIE['cart'])) {
@@ -89,37 +100,15 @@ function getCartItems() {
     return array();
 }
 
-// Remove item from cart
-function removeFromCart($productId) {
+// Add item to cart
+function addToCart($productId, $quantity = 1) {
     $cart = getCartItems();
     if (isset($cart[$productId])) {
-        unset($cart[$productId]);
-        setcookie('cart', json_encode($cart), time() + (86400 * 30), "/");
+        $cart[$productId] += $quantity;
+    } else {
+        $cart[$productId] = $quantity;
     }
-}
-
-// Update cart item quantity
-function updateCartItemQuantity($productId, $quantity) {
-    $cart = getCartItems();
-    if (isset($cart[$productId])) {
-        if ($quantity > 0) {
-            $cart[$productId] = $quantity;
-        } else {
-            unset($cart[$productId]);
-        }
-        setcookie('cart', json_encode($cart), time() + (86400 * 30), "/");
-    }
-}
-
-// Get cart total
-function getCartTotal() {
-    $total = 0;
-    $cartItems = getCartItems();
-    foreach ($cartItems as $productId => $quantity) {
-        $product = getProducts(1, false, null, $productId)[0];
-        $total += $product['price'] * $quantity;
-    }
-    return $total;
+    setcookie('cart', json_encode($cart), time() + (86400 * 30), "/"); // 30 days expiration
 }
 
 // Function to get cart count
@@ -128,28 +117,29 @@ function getCartCount() {
     return array_sum($cartItems);
 }
 
+// Get the current category from the URL parameter
+$currentCategory = isset($_GET['category']) ? $_GET['category'] : null;
+
+// Fetch products for the current category
+$products = $currentCategory ? getProducts(null, false, $currentCategory) : [];
+
+// Fetch all categories for the sidebar
+$categories = getCategories();
+
 // Handle cart actions
 if (isset($_POST['action'])) {
     $action = $_POST['action'];
     $productId = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
     $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 1;
 
-    switch ($action) {
-        case 'remove':
-            removeFromCart($productId);
-            break;
-        case 'update':
-            updateCartItemQuantity($productId, $quantity);
-            break;
+    if ($action === 'add') {
+        addToCart($productId, $quantity);
     }
 
     // Redirect to prevent form resubmission
-    header("Location: cart.php");
+    header("Location: " . $_SERVER['PHP_SELF'] . "?category=" . urlencode($currentCategory));
     exit();
 }
-
-$cartItems = getCartItems();
-$cartTotal = getCartTotal();
 ?>
 
 <!DOCTYPE html>
@@ -157,12 +147,13 @@ $cartTotal = getCartTotal();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kosár - PixelForge</title>
+    <title>PixelForge - <?php echo htmlspecialchars($currentCategory); ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
 </head>
 <body class="font-roboto bg-gray-100">
-<header class="bg-gray-900 text-white shadow-lg">
+    <header class="bg-gray-900 text-white shadow-lg">
         <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
             <a href="https://shador.hu/vizsgaremek/pixelforge" class="text-2xl font-bold text-blue-500">PixelForge</a>
             
@@ -175,7 +166,7 @@ $cartTotal = getCartTotal();
                     <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden group-hover:block">
                         <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                             <?php foreach ($categories as $category): ?>
-                                <a href="?category=<?php echo urlencode($category); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-blue-500" role="menuitem"><?php echo htmlspecialchars($category); ?></a>
+                                <a href="category.php?category=<?php echo urlencode($category); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-blue-500" role="menuitem"><?php echo htmlspecialchars($category); ?></a>
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -184,14 +175,14 @@ $cartTotal = getCartTotal();
                 <form class="relative" action="index.php" method="GET">
                     <input type="text" name="search" placeholder="Keresés..." class="bg-gray-800 text-white rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 w-64">
                     <button type="submit" class="absolute left-3 top-1/2 transform -translate-y-1/2">
-                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0014 0z"></path></svg>
                     </button>
                 </form>
             </div>
             
             <div class="flex items-center space-x-4">
                 <a href="cart.php" class="text-white hover:text-blue-500 transition duration-300 relative">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 004 0z"></path></svg>
                     <span id="cart-count" class="absolute -top-2 -right-2 bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
                         <?php echo getCartCount(); ?>
                     </span>
@@ -202,45 +193,58 @@ $cartTotal = getCartTotal();
         </nav>
     </header>
 
-    <main class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-8">Kosár</h1>
-        <?php if (empty($cartItems)): ?>
-            <p>A kosár üres.</p>
-        <?php else: ?>
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <?php foreach ($cartItems as $productId => $quantity): 
-                    $product = getProducts(1, false, null, $productId)[0];
-                ?>
-                    <div class="flex items-center justify-between border-b py-4">
-                        <div class="flex items-center">
-                            <img src="<?php echo htmlspecialchars($product['images'][0]); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="w-16 h-16 object-cover mr-4">
-                            <div>
-                                <h3 class="font-semibold"><?php echo htmlspecialchars($product['name']); ?></h3>
-                                <p class="text-gray-600"><?php echo number_format($product['price'], 0, ',', ' '); ?> Ft</p>
+    <div class="flex">
+        <!-- Left sidebar menu -->
+        <aside class="w-64 bg-gray-800 text-white min-h-screen">
+            <nav class="p-4">
+                <h2 class="text-xl font-bold mb-4">Kategóriák</h2>
+                <ul>
+                    <?php foreach ($categories as $category): ?>
+                        <li class="mb-2">
+                            <a href="category.php?category=<?php echo urlencode($category); ?>" 
+                               class="block py-2 px-4 hover:bg-gray-700 rounded transition duration-300 <?php echo ($category === $currentCategory) ? 'bg-blue-500' : ''; ?>">
+                                <?php echo htmlspecialchars($category); ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main content -->
+        <main class="flex-1 p-8">
+            <h1 class="text-3xl font-bold mb-8"><?php echo htmlspecialchars($currentCategory); ?></h1>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <?php foreach ($products as $product): ?>
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <a href="product.php?id=<?php echo $product['id']; ?>" class="block hover:opacity-75 transition duration-300">
+                            <div class="relative h-48 overflow-hidden">
+                                <?php if (!empty($product['images'])): ?>
+                                    <img src="<?php echo htmlspecialchars($product['images'][0]); ?>" 
+                                         alt="<?php echo htmlspecialchars($product['name']); ?>" 
+                                         class="w-full h-full object-contain">
+                                <?php else: ?>
+                                    <div class="w-full h-full flex items-center justify-center bg-gray-200">
+                                        <span class="text-gray-500">No image available</span>
+                                    </div>
+                                <?php endif; ?>
                             </div>
-                        </div>
-                        <div class="flex items-center">
-                            <form action="cart.php" method="POST" class="flex items-center">
-                                <input type="hidden" name="action" value="update">
-                                <input type="hidden" name="product_id" value="<?php echo $productId; ?>">
-                                <input type="number" name="quantity" value="<?php echo $quantity; ?>" min="1" class="w-16 text-center border rounded-l px-2 py-1">
-                                <button type="submit" class="bg-blue-500 text-white px-2 py-1 rounded-r hover:bg-blue-600">Frissítés</button>
-                            </form>
-                            <form action="cart.php" method="POST" class="ml-4">
-                                <input type="hidden" name="action" value="remove">
-                                <input type="hidden" name="product_id" value="<?php echo $productId; ?>">
-                                <button type="submit" class="text-red-500 hover:text-red-700">Törlés</button>
+                        </a>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-2 text-gray-800"><?php echo htmlspecialchars($product['name']); ?></h3>
+                            <p class="text-gray-600 mb-2"><?php echo number_format($product['price'], 0, ',', ' '); ?> Ft</p>
+                            <form action="<?php echo $_SERVER['PHP_SELF'] . '?category=' . urlencode($currentCategory); ?>" method="POST">
+                                <input type="hidden" name="action" value="add">
+                                <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 w-full">Kosárba</button>
                             </form>
                         </div>
                     </div>
                 <?php endforeach; ?>
-                <div class="mt-6 text-right">
-                    <p class="text-xl font-semibold">Összesen: <?php echo number_format($cartTotal, 0, ',', ' '); ?> Ft</p>
-                    <a href="checkout.php" class="bg-green-500 text-white px-6 py-2 rounded mt-4 inline-block hover:bg-green-600">Fizetés</a>
-                </div>
             </div>
-        <?php endif; ?>
-    </main>
+        </main>
+    </div>
 
     <footer class="bg-gray-900 text-white py-8">
         <div class="container mx-auto px-4">

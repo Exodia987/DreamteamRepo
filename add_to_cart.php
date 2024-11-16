@@ -1,22 +1,24 @@
 <?php
-session_start();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
 
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
+    if ($product_id > 0) {
+        $cart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : array();
+        
+        if (isset($cart[$product_id])) {
+            $cart[$product_id]++;
+        } else {
+            $cart[$product_id] = 1;
+        }
 
-if (isset($_GET['id'])) {
-    $product_id = intval($_GET['id']);
-    
-    // Here you would typically fetch the product details from the database
-    // For this example, we'll just add the ID to the cart
-    if (!isset($_SESSION['cart'][$product_id])) {
-        $_SESSION['cart'][$product_id] = 1;
+        setcookie('cart', json_encode($cart), time() + (86400 * 30), "/"); // 30 days expiration
+
+        $cartCount = array_sum($cart);
+
+        echo json_encode(array('success' => true, 'cartCount' => $cartCount));
     } else {
-        $_SESSION['cart'][$product_id]++;
+        echo json_encode(array('success' => false, 'message' => 'Invalid product ID'));
     }
+} else {
+    echo json_encode(array('success' => false, 'message' => 'Invalid request method'));
 }
-
-// Redirect back to the previous page
-header('Location: ' . $_SERVER['HTTP_REFERER']);
-exit;
