@@ -15,7 +15,7 @@ if ($conn->connect_error) {
 
 $username = '';
 $message = '';
-$referrer = isset($_GET['ref']) ? urldecode($_GET['ref']) : 'webshop.php';
+$referrer = isset($_GET['ref']) ? urldecode($_GET['ref']) : 'pixelforge';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $inputUsername = $_POST['username'] ?? '';

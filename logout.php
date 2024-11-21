@@ -27,5 +27,5 @@ if (isset($_COOKIE['auth_token'])) {
 $conn->close();
 
 // Redirect to the home page
-header("Location: index.php");
+header("Location: pixelforge");
 exit();
