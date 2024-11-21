@@ -10,12 +10,27 @@ if ($conn->connect_error) {
     die("Kapcsolódási hiba: " . $conn->connect_error);
 }
 
+// Check for logged-in user
+$username = '';
+$isLoggedIn = false;
+if (isset($_COOKIE['auth_token'])) {
+    $stmt = $conn->prepare("SELECT username FROM users WHERE token = ?");
+    $stmt->bind_param("s", $_COOKIE['auth_token']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        $username = htmlspecialchars($user['username']);
+        $isLoggedIn = true;
+    }
+}
+
 // Fetch products with images
-function getProducts($limit = null, $random = false, $category = null, $productId = null) {
+function getProducts($limit = null, $random = true, $category = null, $productId = null) {
     global $conn;
-    $sql = "SELECT products.id, products.name, products.description, products.price, products.category, products.stock, product_images.image_url 
-            FROM products 
-            LEFT JOIN product_images ON products.id = product_images.product_id";
+    $sql = "SELECT products.id, products.name, products.description, products.price, products.category, products.stock, 
+            (SELECT image_url FROM product_images WHERE product_id = products.id LIMIT 1) as image_url 
+            FROM products";
     
     $where = [];
     $params = [];
@@ -58,25 +73,20 @@ function getProducts($limit = null, $random = false, $category = null, $productI
     $products = array();
     
     while ($row = $result->fetch_assoc()) {
-        $productId = $row['id'];
-        if (!isset($products[$productId])) {
-            $products[$productId] = array(
-                'id' => $row['id'],
-                'name' => $row['name'],
-                'description' => $row['description'],
-                'price' => $row['price'],
-                'category' => $row['category'],
-                'stock' => $row['stock'],
-                'images' => array()
-            );
-        }
-        if ($row['image_url']) {
-            $products[$productId]['images'][] = $row['image_url'];
-        }
+        $products[] = array(
+            'id' => $row['id'],
+            'name' => $row['name'],
+            'description' => $row['description'],
+            'price' => $row['price'],
+            'category' => $row['category'],
+            'stock' => $row['stock'],
+            'image_url' => $row['image_url']
+        );
     }
     
-    return array_values($products);
+    return $products;
 }
+
 
 // Fetch categories
 function getCategories() {
@@ -172,7 +182,7 @@ if (isset($_POST['action'])) {
     header("Location: " . $_SERVER['PHP_SELF']);
     exit();
 }
-
+// Always fetch exactly 4 random products
 $featuredProducts = getProducts(4, true);
 $categories = getCategories();
 
@@ -202,7 +212,7 @@ $categoryIcons = [
     <title>PixelForge - Prémium Gamer Hardverek</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous"></script>
 </head>
 <body class="font-roboto bg-gray-100">
 <header class="bg-gray-900 text-white shadow-lg">
@@ -233,14 +243,19 @@ $categoryIcons = [
         </div>
         
         <div class="flex items-center space-x-4">
-            <a href="cart.php" class="text-white hover:text-blue-500 transition duration-300 relative">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 004 0z"></path></svg>
+            <a href="cart" class="text-white hover:text-blue-500 transition duration-300 relative">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                 <span id="cart-count" class="absolute -top-2 -right-2 bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
                     <?php echo getCartCount(); ?>
                 </span>
             </a>
-            <a href="login.php" class="text-white hover:text-blue-500 transition duration-300">Bejelentkezés</a>
-            <a href="register.php" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">Regisztráció</a>
+            <?php if ($isLoggedIn): ?>
+                <span class="text-white"><?php echo $username; ?></span>
+                <a href="logout.php" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300">Kijelentkezés</a>
+            <?php else: ?>
+                <a href="login.php" class="text-white hover:text-blue-500 transition duration-300">Bejelentkezés</a>
+                <a href="register.php" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">Regisztráció</a>
+            <?php endif; ?>
         </div>
     </nav>
 </header>
@@ -268,38 +283,38 @@ $categoryIcons = [
             </section>
 
             <section class="container mx-auto px-4 py-16">
-                <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">
-                    <?php echo $currentCategory ? htmlspecialchars($currentCategory) : 'Kiemelt termékek'; ?>
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <?php foreach ($products as $product): ?>
-                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                            <a href="product.php?id=<?php echo $product['id']; ?>" class="block hover:opacity-75 transition duration-300">
-                                <div class="relative h-48 overflow-hidden">
-                                    <?php if (!empty($product['images'])): ?>
-                                        <img src="<?php echo htmlspecialchars($product['images'][0]); ?>" 
-                                             alt="<?php echo htmlspecialchars($product['name']); ?>" 
-                                             class="w-full h-full object-contain">
-                                    <?php else: ?>
-                                        <div class="w-full h-full flex items-center justify-center bg-gray-200">
-                                            <span class="text-gray-500">No image available</span>
-                                        </div>
-                                    <?php endif; ?>
+        <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">
+            <?php echo $currentCategory ? htmlspecialchars($currentCategory) : 'Kiemelt termékek'; ?>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <?php foreach ($featuredProducts as $product): ?>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <a href="product.php?id=<?php echo $product['id']; ?>" class="block hover:opacity-75 transition duration-300">
+                        <div class="relative h-48 overflow-hidden">
+                            <?php if (!empty($product['image_url'])): ?>
+                                <img src="<?php echo htmlspecialchars($product['image_url']); ?>" 
+                                     alt="<?php echo htmlspecialchars($product['name']); ?>" 
+                                     class="w-full h-full object-contain">
+                            <?php else: ?>
+                                <div class="w-full h-full flex items-center justify-center bg-gray-200">
+                                    <span class="text-gray-500">No image available</span>
                                 </div>
-                            </a>
-                            <div class="p-4">
-                                <h3 class="font-semibold text-lg mb-2 text-gray-800"><?php echo htmlspecialchars($product['name']); ?></h3>
-                                <p class="text-gray-600 mb-2"><?php echo number_format($product['price'], 0, ',', ' '); ?> Ft</p>
-                                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-                                    <input type="hidden" name="action" value="add">
-                                    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 w-full">Kosárba</button>
-                                </form>
-                            </div>
+                            <?php endif; ?>
                         </div>
-                    <?php endforeach; ?>
+                    </a>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-2 text-gray-800"><?php echo htmlspecialchars($product['name']); ?></h3>
+                        <p class="text-gray-600 mb-2"><?php echo number_format($product['price'], 0, ',', ' '); ?> Ft</p>
+                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+                            <input type="hidden" name="action" value="add">
+                            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 w-full">Kosárba</button>
+                        </form>
+                    </div>
                 </div>
-            </section>
+            <?php endforeach; ?>
+        </div>
+    </section>
 
             <section class="bg-gray-200 py-16">
                 <div class="container mx-auto px-4">
@@ -307,7 +322,16 @@ $categoryIcons = [
                     <p class="text-lg text-gray-600 max-w-3xl mx-auto text-center">A PixelForge a legjobb minőségű gamer hardvereket kínálja, hogy maximalizáld a játékélményed. Szakértő csapatunk gondosan válogatja össze a legújabb és leginnovatívabb termékeket, hogy te mindig egy lépéssel a többiek előtt járj.</p>
                 </div>
             </section>
-
+            <section class="relative">
+                <img src="images/futarauto.png" alt="Futár Autó" class="w-full h-[900px] object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center space-y-6">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center leading-tight">Válaszd saját futárszolgálatunk</h1>
+                    <p class="text-xl md:text-2xl text-white text-center">Tudj meg többet futárszolgálatunkról</p>
+                    <a href="szallitas" class="px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition duration-300">
+                        Szállítás
+                    </a>
+                </div>
+            </section>
             <section class="py-16 bg-blue-600 text-white">
                 <div class="container mx-auto px-4">
                     <h2 class="text-3xl font-bold mb-8 text-center">Hírlevélre feliratkozás</h2>
@@ -334,10 +358,10 @@ $categoryIcons = [
                 <div>
                     <h3 class="text-lg font-semibold mb-4">Információk</h3>
                     <ul>
-                        <li><a href="#" class="hover:text-blue-500 transition duration-300">Szállítás</a></li>
-                        <li><a href="#" class="hover:text-blue-500 transition duration-300">Garancia</a></li>
-                        <li><a href="#" class="hover:text-blue-500 transition duration-300">ÁSZF</a></li>
-                        <li><a href="#" class="hover:text-blue-500 transition duration-300">Adatvédelem</a></li>
+                        <li><a href="szallitas" class="hover:text-blue-500 transition duration-300">Szállítás</a></li>
+                        <li><a href="garancia" class="hover:text-blue-500 transition duration-300">Garancia</a></li>
+                        <li><a href="aszf" class="hover:text-blue-500 transition duration-300">ÁSZF</a></li>
+                        <li><a href="adatvedelem" class="hover:text-blue-500 transition duration-300">Adatvédelem</a></li>
                     </ul>
                 </div>
                 <div>
@@ -357,5 +381,57 @@ $categoryIcons = [
     </footer>
 
     <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const productId = this.getAttribute('data-product-id');
+                fetch('add_to_cart.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'product_id=' + productId
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('A termék hozzáadva a kosárhoz!');
+                        updateCartCount(data.cartCount);
+                    } else {
+                        alert('Hiba történt a kosárhoz adás során.');
+                    }
+                });
+            });
+        });
+
+        function updateCartCount(count) {
+            const cartCountElement = document.getElementById('cart-count');
+            if (cartCountElement) {
+                cartCountElement.textContent = count;
+            }
+        }
+    });
+    function cycleProductImages() {
+        const productContainers = document.querySelectorAll('.grid > a');
+        productContainers.forEach(container => {
+            const images = container.querySelectorAll('img');
+            if (images.length > 1) {
+                let currentIndex = 0;
+                setInterval(() => {
+                    images[currentIndex].classList.remove('opacity-100');
+                    images[currentIndex].classList.add('opacity-0');
+                    currentIndex = (currentIndex + 1) % images.length;
+                    images[currentIndex].classList.remove('opacity-0');
+                    images[currentIndex].classList.add('opacity-100');
+                }, 3000); // Change image every 3 seconds
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', cycleProductImages);
+    </script>
 </body>
 </html>

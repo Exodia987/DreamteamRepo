@@ -52,9 +52,22 @@ function addProduct($name, $description, $price, $category, $stock) {
 
 function updateProduct($id, $name, $description, $price, $category, $stock) {
     global $conn;
+    error_log("Attempting to update product with ID: $id");
+    error_log("New values - Name: $name, Description: $description, Price: $price, Category: $category, Stock: $stock");
+    
     $stmt = $conn->prepare("UPDATE products SET name = ?, description = ?, price = ?, category = ?, stock = ? WHERE id = ?");
     $stmt->bind_param("ssdsii", $name, $description, $price, $category, $stock, $id);
-    return $stmt->execute();
+    $result = $stmt->execute();
+    
+    if (!$result) {
+        error_log("Error updating product: " . $stmt->error);
+        error_log("SQL State: " . $stmt->sqlstate);
+        error_log("Error No: " . $stmt->errno);
+    } else {
+        error_log("Product updated successfully. Affected rows: " . $stmt->affected_rows);
+    }
+    
+    return $result;
 }
 
 function deleteProduct($id) {
@@ -112,11 +125,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         } elseif (isset($_POST['update'])) {
             $id = $_POST['id'];
+            error_log("About to call updateProduct with ID: " . $id);
             if (updateProduct($id, $name, $description, $price, $category, $stock)) {
-                $product_id = $id;
                 $_SESSION['message'] = "Product updated successfully.";
+                error_log("Product updated successfully.");
             } else {
                 $_SESSION['error'] = "Error updating product.";
+                error_log("Error updating product.");
             }
         }
 
@@ -193,7 +208,7 @@ if (isset($_GET['edit'])) {
     $editProductImages = getProductImages($editProduct['id']);
 }
 
-$categories = ['Egerek', 'Fejhallgatók', 'Billentyűzetek', 'Monitorok', 'Gamer PC-k', 'Egérpadok'];
+$categories = ['Egerek', 'Fejhallgatók', 'Billentyűzetek', 'Monitorok', 'Gamer PC-k', 'Egérpadok', 'Konzolok', 'Kontrollerek'];
 ?>
 
 <!DOCTYPE html>

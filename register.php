@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $mail->addAddress($email, $username);
                     $mail->isHTML(true);
                     $mail->Subject = 'Verify Your Account';
-                    $verification_link = "https://shador.hu/vizsga/vizsga/verification.php?token=" . $verification_token;
+                    $verification_link = "https://shador.hu/vizsgaremek/verification.php?token=" . $verification_token;
                     $mail->Body = "<p>Dear " . htmlspecialchars($username) . ",</p><hr><p>Please click the following link to verify your account: <a href='" . $verification_link . "'>Verify Account</a></p>";
                     $mail->AltBody = 'Dear ' . $username . ",\n\nPlease visit the following link to verify your account: " . $verification_link;
 

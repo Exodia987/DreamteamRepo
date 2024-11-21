@@ -257,53 +257,73 @@ $categoryIcons = [
     </nav>
 </header>
 <main class="container mx-auto px-4 py-10 bg-white shadow-md rounded-lg">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Általános Szerződési Feltételek</h1>
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Szállítási Információk</h1>
     <div class="space-y-8 text-gray-700 leading-relaxed">
         <section>
-            <h2 class="text-xl font-semibold text-blue-600">1. Bevezetés</h2>
-            <p>Kedves Látogató! Gratulálunk, hogy sikeresen eljutottál ide, ahol minden betű izgalmasabb, mint egy unalmas pénzügyi kimutatás! Az alábbi szabályok azért vannak, hogy mindannyian békésen, barátságban vásárolhassunk.</p>
-        </section>
-        <section>
-            <h2 class="text-xl font-semibold text-blue-600">2. Vásárlási Feltételek</h2>
-            <p>Ha nálunk vásárolsz, a következő dolgokat vállalod:</p>
+            <h2 class="text-xl font-semibold text-blue-600">1. Szállítási Lehetőségek</h2>
+            <p>Webshopunk igyekszik minden vásárlónak a lehető legkényelmesebb szállítási módot biztosítani. Az alábbi lehetőségek közül választhatsz:</p>
             <ul class="list-disc ml-6">
-                <li>Nem próbálod meg ellopni a kosaradat a digitális térből (mert mi észrevesszük!).</li>
-                <li>A rendelés leadása után nem küldesz nekünk füstjeleket; e-mailben sokkal gyorsabb válaszolni.</li>
-                <li>Tudomásul veszed, hogy a termék képei nem tartalmazzák a macskát, aki rajta ül (bár megrendeléskor kedvesen mosolyog rád).</li>
+                <li><strong>GLS futárszolgálat:</strong> Gyors és megbízható szolgáltatás, ami garantálja, hogy a csomagod épségben és időben megérkezik.</li>
+                <li><strong>MPL (Magyar Posta):</strong> Kényelmes megoldás, ha a helyi postára szeretnéd kérni a csomagot, vagy a postás házhoz hozza.</li>
+                <li><strong>FedEx:</strong> Nemzetközi szállításokhoz kiváló választás. Ha tőlünk távolabb élsz, a FedEx a legjobb barátod.</li>
+                <li><strong>PixelForge saját futárszolgálat:</strong> A mi kedves és megbízható futáraink szállítják ki a csomagod. Gyorsak, pontosak, és mindig mosollyal az arcukon érkeznek!</li>
             </ul>
         </section>
         <section>
-            <h2 class="text-xl font-semibold text-blue-600">3. Szállítási Feltételek</h2>
-            <p>Szállításunk gyorsabb, mint ahogy a reggeli kávéd kihűl (feltéve, ha nem reggel rendelsz). Ha valamiért mégis késnénk, ígérjük, hogy hibáinkat sok szeretettel és egy kávéval pótoljuk (legalábbis gondolatban).</p>
+            <h2 class="text-xl font-semibold text-blue-600">2. Szállítási Díjak</h2>
+            <p>A szállítási díj függ a választott szolgáltatótól és a csomag súlyától. Az alábbi táblázat segít eligazodni:</p>
+            <table class="w-full text-left border-collapse border border-gray-300">
+                <thead>
+                    <tr>
+                        <th class="border border-gray-300 px-4 py-2 bg-gray-100">Szállító</th>
+                        <th class="border border-gray-300 px-4 py-2 bg-gray-100">Díj</th>
+                        <th class="border border-gray-300 px-4 py-2 bg-gray-100">Szállítási Idő</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2">GLS</td>
+                        <td class="border border-gray-300 px-4 py-2">1 500 Ft</td>
+                        <td class="border border-gray-300 px-4 py-2">1-2 munkanap</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2">MPL</td>
+                        <td class="border border-gray-300 px-4 py-2">1 200 Ft</td>
+                        <td class="border border-gray-300 px-4 py-2">2-3 munkanap</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2">FedEx</td>
+                        <td class="border border-gray-300 px-4 py-2">5 000 Ft</td>
+                        <td class="border border-gray-300 px-4 py-2">3-5 munkanap</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2">PixelForge saját futár</td>
+                        <td class="border border-gray-300 px-4 py-2">1 000 Ft</td>
+                        <td class="border border-gray-300 px-4 py-2">Aznap, ha 12:00-ig rendelsz!</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section>
+            <h2 class="text-xl font-semibold text-blue-600">3. Kiszállítási Terület</h2>
+            <p>Jelenleg Magyarország egész területére szállítunk, de nemzetközi rendeléseket is teljesítünk a FedEx segítségével. Ha budapesti vásárló vagy, érdemes a PixelForge saját futárját választanod a gyorsabb kiszállítás érdekében!</p>
+        </section>
+        <section>
+            <h2 class="text-xl font-semibold text-blue-600">4. Miért válaszd a PixelForge futárját?</h2>
+            <p>A saját futárszolgálatunk a legjobb választás, ha szeretnél:</p>
             <ul class="list-disc ml-6">
-                <li><strong>GLS:</strong> Pontos és gyors, bár sajnos nem űrhajóval érkezik.</li>
-                <li><strong>MPL:</strong> A magyar posta, de mi bízunk benne, hogy mosolyogva kopogtatnak az ajtódon.</li>
-                <li><strong>FedEx:</strong> Amilyen gyors, olyan profi. Szinte már féltékenyek vagyunk rájuk.</li>
+                <li>Villámgyorsan hozzájutni a csomagodhoz (már aznap kiszállítjuk, ha időben rendelsz).</li>
+                <li>Rugalmas és kedves ügyfélszolgálatot tapasztalni, mert a futárjaink minden problémára találnak megoldást.</li>
+                <li>Biztos lenni abban, hogy a rendelésed pont úgy érkezik meg, ahogy elképzelted.</li>
             </ul>
         </section>
         <section>
-            <h2 class="text-xl font-semibold text-blue-600">4. Fizetés</h2>
-            <p>Fizetési lehetőségek:</p>
-            <ul class="list-disc ml-6">
-                <li><strong>Kártyás fizetés:</strong> Nem fogadunk el Monopoly-pénzt, bármennyire is vicces lenne.</li>
-                <li><strong>Banki átutalás:</strong> Ez az opció csak azoknak, akik szeretik a számok világát.</li>
-                <li><strong>Utánvét:</strong> Ha személyesen akarod érezni a pénz súlyát, mielőtt megválnál tőle.</li>
-            </ul>
-        </section>
-        <section>
-            <h2 class="text-xl font-semibold text-blue-600">5. Garancia</h2>
-            <p>Termékeinkhez garanciát vállalunk, mert mi sem szeretjük, ha valami elromlik. Ha mégis meghibásodik, nyugodtan keress minket, nem harapunk. (Csak akkor, ha az ügyfélszolgálati kávéfőző épp rossz.)</p>
-        </section>
-        <section>
-            <h2 class="text-xl font-semibold text-blue-600">6. Panaszkezelés</h2>
-            <p>Ha valami nem stimmel, kérjük, ne szétkiabáld az interneten, hanem előbb jelezd nekünk! Mindent megteszünk, hogy megoldjuk a problémát, akár még bűvésztrükköket is bevetünk, ha szükséges.</p>
-        </section>
-        <section>
-            <h2 class="text-xl font-semibold text-blue-600">7. Záró rendelkezések</h2>
-            <p>Ezen feltételek azért vannak, hogy mindenki boldogan és elégedetten használhassa a PixelForge szolgáltatásait. Ha pedig mégsem sikerült elmosolyodnod, küldünk egy virtuális ölelést, mert minden jobb lesz tőle!</p>
+            <h2 class="text-xl font-semibold text-blue-600">5. Szállítási Problémák</h2>
+            <p>Bár igyekszünk minden csomagot időben kézbesíteni, előfordulhatnak problémák. Ha bármilyen gond van a kiszállítással, azonnal jelezd nekünk az <a href="mailto:info@pixelforge.hu" class="text-blue-500 underline">info@pixelforge.hu</a> címen vagy a +36 1 234 5678 telefonszámon!</p>
         </section>
     </div>
 </main>
+
 
 <footer class="bg-gray-900 text-white py-8">
         <div class="container mx-auto px-4">

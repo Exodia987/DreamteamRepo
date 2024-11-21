@@ -114,6 +114,12 @@ function formatDescription($description) {
                 $inList = true;
             }
             $formatted .= '<li>' . htmlspecialchars(substr($line, 2)) . '</li>';
+        } elseif (strpos($line, '##') === 0) {
+            if ($inList) {
+                $formatted .= '</ul>';
+                $inList = false;
+            }
+            $formatted .= '<p class="mb-2 font-bold">' . htmlspecialchars(substr($line, 2)) . '</p>';
         } else {
             if ($inList) {
                 $formatted .= '</ul>';
@@ -137,6 +143,19 @@ function getCartCount() {
         return array_sum($cart);
     }
     return 0;
+}
+
+function calculateShippingDays() {
+    $today = new DateTime();
+    $dayOfWeek = (int)$today->format('N'); // 1 (Monday) to 7 (Sunday)
+    
+    if ($dayOfWeek === 6) { // Saturday
+        return 2; // Wait till Monday
+    } elseif ($dayOfWeek === 7) { // Sunday
+        return 1; // Wait till Monday
+    } else {
+        return 1; // Next business day
+    }
 }
 ?>
 
@@ -224,15 +243,38 @@ function getCartCount() {
                 <div class="text-gray-600 mb-4">
                     <?php echo formatDescription($product['description']); ?>
                 </div>
-                <div class="flex items-center mb-4">
+                <div class="flex items-center space-x-4 mb-4">
+                    
+    <div class="flex items-center border rounded">
+        <input type="number" 
+               id="quantity" 
+               min="1" 
+               value="1" 
+               class="w-20 px-3 py-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+               max="<?php echo $product['stock']; ?>">
+    </div>
+    <button id="add-to-cart" 
+            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300" 
+            data-product-id="<?php echo $product['id']; ?>"
+            <?php echo $product['stock'] <= 0 ? 'disabled' : ''; ?>>
+        Kosárba
+    </button>
+</div>
+<div class="text-gray-600">
+    <?php
+    $shippingDays = calculateShippingDays();
+    echo "Szállítási idő: " . $shippingDays . " nap";
+    if ($shippingDays > 1) {
+        echo " (hétvége miatt)";
+    }
+    ?>
+</div>
+<div class="flex items-center mb-4">
                     <span class="text-2xl font-bold text-gray-800"><?php echo number_format($product['price'], 0, ',', ' '); ?> Ft</span>
                     <span class="ml-2 px-2 py-1 bg-<?php echo $product['stock'] > 0 ? 'green' : 'red'; ?>-500 text-white text-sm rounded">
                         <?php echo $product['stock'] > 0 ? 'Készleten' : 'Nincs készleten'; ?>
                     </span>
                 </div>
-                <button id="add-to-cart" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300" data-product-id="<?php echo $product['id']; ?>">
-                    Kosárba
-                </button>
             </div>
         </div>
 
@@ -314,39 +356,52 @@ function getCartCount() {
     </footer>
 
     <script>
-    function changeMainImage(src) {
-        document.getElementById('main-image').src = src;
-    }
+function changeMainImage(src) {
+    document.getElementById('main-image').src = src;
+}
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const addToCartButton = document.getElementById('add-to-cart');
-        addToCartButton.addEventListener('click', function() {
-            const productId = this.getAttribute('data-product-id');
-            fetch('add_to_cart.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'product_id=' + productId
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('A termék hozzáadva a kosárhoz!');
-                    updateCartCount(data.cartCount);
-                } else {
-                    alert('Hiba történt a kosárhoz adás során.');
-                }
-            });
-        });
+document.addEventListener('DOMContentLoaded', function() {
+    const addToCartButton = document.getElementById('add-to-cart');
+    const quantityInput = document.getElementById('quantity');
 
-        function updateCartCount(count) {
-            const cartCountElement = document.getElementById('cart-count');
-            if (cartCountElement) {
-                cartCountElement.textContent = count;
+    addToCartButton.addEventListener('click', function() {
+        const productId = this.getAttribute('data-product-id');
+        const quantity = parseInt(quantityInput.value) || 1;
+
+        fetch('add_to_cart.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'product_id=' + productId + '&quantity=' + quantity
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('A termék hozzáadva a kosárhoz!');
+                updateCartCount(data.cartCount);
+            } else {
+                alert('Hiba történt a kosárhoz adás során.');
             }
-        }
+        });
     });
-    </script>
+
+    // Add input validation for quantity
+    quantityInput.addEventListener('change', function() {
+        const value = parseInt(this.value);
+        const max = parseInt(this.getAttribute('max'));
+        
+        if (value < 1) this.value = 1;
+        if (max && value > max) this.value = max;
+    });
+
+    function updateCartCount(count) {
+        const cartCountElement = document.getElementById('cart-count');
+        if (cartCountElement) {
+            cartCountElement.textContent = count;
+        }
+    }
+});
+</script>
 </body>
 </html>

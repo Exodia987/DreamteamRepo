@@ -257,50 +257,61 @@ $categoryIcons = [
     </nav>
 </header>
 <main class="container mx-auto px-4 py-10 bg-white shadow-md rounded-lg">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Általános Szerződési Feltételek</h1>
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Garanciális Információk</h1>
     <div class="space-y-8 text-gray-700 leading-relaxed">
         <section>
-            <h2 class="text-xl font-semibold text-blue-600">1. Bevezetés</h2>
-            <p>Kedves Látogató! Gratulálunk, hogy sikeresen eljutottál ide, ahol minden betű izgalmasabb, mint egy unalmas pénzügyi kimutatás! Az alábbi szabályok azért vannak, hogy mindannyian békésen, barátságban vásárolhassunk.</p>
-        </section>
-        <section>
-            <h2 class="text-xl font-semibold text-blue-600">2. Vásárlási Feltételek</h2>
-            <p>Ha nálunk vásárolsz, a következő dolgokat vállalod:</p>
+            <h2 class="text-xl font-semibold text-blue-600">Garanciális Feltételek</h2>
+            <p>A PixelForge-nál minden termékünkre gyártói garanciát biztosítunk. A garancia időtartama termékkategóriánként változó, de általában 12-36 hónap.</p>
             <ul class="list-disc ml-6">
-                <li>Nem próbálod meg ellopni a kosaradat a digitális térből (mert mi észrevesszük!).</li>
-                <li>A rendelés leadása után nem küldesz nekünk füstjeleket; e-mailben sokkal gyorsabb válaszolni.</li>
-                <li>Tudomásul veszed, hogy a termék képei nem tartalmazzák a macskát, aki rajta ül (bár megrendeléskor kedvesen mosolyog rád).</li>
+                <li><strong>Hardverek:</strong> 24 hónap gyártói garancia.</li>
+                <li><strong>Perifériák:</strong> 12 hónap gyártói garancia.</li>
+                <li><strong>Kiegészítők:</strong> 6 hónap garancia.</li>
             </ul>
         </section>
         <section>
-            <h2 class="text-xl font-semibold text-blue-600">3. Szállítási Feltételek</h2>
-            <p>Szállításunk gyorsabb, mint ahogy a reggeli kávéd kihűl (feltéve, ha nem reggel rendelsz). Ha valamiért mégis késnénk, ígérjük, hogy hibáinkat sok szeretettel és egy kávéval pótoljuk (legalábbis gondolatban).</p>
-            <ul class="list-disc ml-6">
-                <li><strong>GLS:</strong> Pontos és gyors, bár sajnos nem űrhajóval érkezik.</li>
-                <li><strong>MPL:</strong> A magyar posta, de mi bízunk benne, hogy mosolyogva kopogtatnak az ajtódon.</li>
-                <li><strong>FedEx:</strong> Amilyen gyors, olyan profi. Szinte már féltékenyek vagyunk rájuk.</li>
+            <h2 class="text-xl font-semibold text-blue-600">Garanciális Ügyintézés</h2>
+            <p>A garanciális ügyintézés gördülékeny lebonyolítása érdekében kérjük, kövesse az alábbi lépéseket:</p>
+            <ul class="list-decimal ml-6">
+                <li>Vegye fel a kapcsolatot ügyfélszolgálatunkkal az alábbi elérhetőségeken:</li>
+                <ul class="list-disc ml-6">
+                    <li><strong>Email:</strong> support@pixelforge.hu</li>
+                    <li><strong>Telefon:</strong> +36 1 234 5678</li>
+                </ul>
+                <li>Készítse elő a vásárlást igazoló számlát vagy nyugtát.</li>
+                <li>Küldje vissza a terméket eredeti csomagolásban, amennyiben lehetséges.</li>
             </ul>
         </section>
         <section>
-            <h2 class="text-xl font-semibold text-blue-600">4. Fizetés</h2>
-            <p>Fizetési lehetőségek:</p>
+            <h2 class="text-xl font-semibold text-blue-600">Garancia Érvényesítése</h2>
+            <p>A garancia kizárólag az alábbi feltételek mellett érvényes:</p>
             <ul class="list-disc ml-6">
-                <li><strong>Kártyás fizetés:</strong> Nem fogadunk el Monopoly-pénzt, bármennyire is vicces lenne.</li>
-                <li><strong>Banki átutalás:</strong> Ez az opció csak azoknak, akik szeretik a számok világát.</li>
-                <li><strong>Utánvét:</strong> Ha személyesen akarod érezni a pénz súlyát, mielőtt megválnál tőle.</li>
+                <li>A terméket rendeltetésszerűen használták.</li>
+                <li>A meghibásodás gyártási hiba következménye.</li>
+                <li>A vásárlást igazoló dokumentumok rendelkezésre állnak.</li>
+            </ul>
+            <p>Nem vonatkozik a garancia az alábbi esetekre:</p>
+            <ul class="list-disc ml-6">
+                <li>Sérülések, amelyek nem megfelelő használatból erednek.</li>
+                <li>Helytelen tárolás vagy szállítás okozta károk.</li>
+                <li>Nem hivatalos szerviz által végzett javítások.</li>
             </ul>
         </section>
         <section>
-            <h2 class="text-xl font-semibold text-blue-600">5. Garancia</h2>
-            <p>Termékeinkhez garanciát vállalunk, mert mi sem szeretjük, ha valami elromlik. Ha mégis meghibásodik, nyugodtan keress minket, nem harapunk. (Csak akkor, ha az ügyfélszolgálati kávéfőző épp rossz.)</p>
+            <h2 class="text-xl font-semibold text-blue-600">Csere és Javítás</h2>
+            <p>Amennyiben a termék hibás és a garancia érvényes, a következő opciók közül választhat:</p>
+            <ul class="list-disc ml-6">
+                <li><strong>Javítás:</strong> Az adott hibát megjavítjuk.</li>
+                <li><strong>Csere:</strong> Amennyiben a javítás nem lehetséges, csereterméket biztosítunk.</li>
+                <li><strong>Pénzvisszatérítés:</strong> Ha a termék javítása és cseréje nem lehetséges, a vételár visszatérítésére kerül sor.</li>
+            </ul>
         </section>
         <section>
-            <h2 class="text-xl font-semibold text-blue-600">6. Panaszkezelés</h2>
-            <p>Ha valami nem stimmel, kérjük, ne szétkiabáld az interneten, hanem előbb jelezd nekünk! Mindent megteszünk, hogy megoldjuk a problémát, akár még bűvésztrükköket is bevetünk, ha szükséges.</p>
-        </section>
-        <section>
-            <h2 class="text-xl font-semibold text-blue-600">7. Záró rendelkezések</h2>
-            <p>Ezen feltételek azért vannak, hogy mindenki boldogan és elégedetten használhassa a PixelForge szolgáltatásait. Ha pedig mégsem sikerült elmosolyodnod, küldünk egy virtuális ölelést, mert minden jobb lesz tőle!</p>
+            <h2 class="text-xl font-semibold text-blue-600">Fontos Tudnivalók</h2>
+            <ul class="list-disc ml-6">
+                <li>Kérjük, minden esetben őrizze meg a vásárlási bizonylatot!</li>
+                <li>A garanciális ügyintézés folyamata 7-14 munkanapot vehet igénybe.</li>
+                <li>Nemzetközi vásárlások esetén a garancia feltételei eltérhetnek.</li>
+            </ul>
         </section>
     </div>
 </main>

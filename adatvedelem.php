@@ -257,50 +257,66 @@ $categoryIcons = [
     </nav>
 </header>
 <main class="container mx-auto px-4 py-10 bg-white shadow-md rounded-lg">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Általános Szerződési Feltételek</h1>
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Adatvédelmi Tájékoztató</h1>
     <div class="space-y-8 text-gray-700 leading-relaxed">
         <section>
-            <h2 class="text-xl font-semibold text-blue-600">1. Bevezetés</h2>
-            <p>Kedves Látogató! Gratulálunk, hogy sikeresen eljutottál ide, ahol minden betű izgalmasabb, mint egy unalmas pénzügyi kimutatás! Az alábbi szabályok azért vannak, hogy mindannyian békésen, barátságban vásárolhassunk.</p>
+            <h2 class="text-xl font-semibold text-blue-600">Bevezetés</h2>
+            <p>A PixelForge elkötelezett ügyfelei adatainak védelme iránt. Az alábbi tájékoztató bemutatja, hogy miként kezeljük az Ön személyes adatait, és milyen jogok illetik meg Önt az adatvédelemmel kapcsolatban.</p>
         </section>
         <section>
-            <h2 class="text-xl font-semibold text-blue-600">2. Vásárlási Feltételek</h2>
-            <p>Ha nálunk vásárolsz, a következő dolgokat vállalod:</p>
+            <h2 class="text-xl font-semibold text-blue-600">Gyűjtött Adatok</h2>
+            <p>A weboldal használata során a következő típusú adatokat gyűjthetjük:</p>
             <ul class="list-disc ml-6">
-                <li>Nem próbálod meg ellopni a kosaradat a digitális térből (mert mi észrevesszük!).</li>
-                <li>A rendelés leadása után nem küldesz nekünk füstjeleket; e-mailben sokkal gyorsabb válaszolni.</li>
-                <li>Tudomásul veszed, hogy a termék képei nem tartalmazzák a macskát, aki rajta ül (bár megrendeléskor kedvesen mosolyog rád).</li>
+                <li><strong>Személyes adatok:</strong> név, e-mail cím, telefonszám, számlázási és szállítási cím.</li>
+                <li><strong>Technikai adatok:</strong> IP-cím, böngésző típusa, operációs rendszer, látogatás időpontja.</li>
+                <li><strong>Vásárlási adatok:</strong> rendelések, kosár tartalma, fizetési adatok (pl. tranzakció azonosító).</li>
             </ul>
         </section>
         <section>
-            <h2 class="text-xl font-semibold text-blue-600">3. Szállítási Feltételek</h2>
-            <p>Szállításunk gyorsabb, mint ahogy a reggeli kávéd kihűl (feltéve, ha nem reggel rendelsz). Ha valamiért mégis késnénk, ígérjük, hogy hibáinkat sok szeretettel és egy kávéval pótoljuk (legalábbis gondolatban).</p>
+            <h2 class="text-xl font-semibold text-blue-600">Adatkezelés Céljai</h2>
+            <p>Az Ön által megadott adatokat az alábbi célokra használjuk:</p>
             <ul class="list-disc ml-6">
-                <li><strong>GLS:</strong> Pontos és gyors, bár sajnos nem űrhajóval érkezik.</li>
-                <li><strong>MPL:</strong> A magyar posta, de mi bízunk benne, hogy mosolyogva kopogtatnak az ajtódon.</li>
-                <li><strong>FedEx:</strong> Amilyen gyors, olyan profi. Szinte már féltékenyek vagyunk rájuk.</li>
+                <li>Megrendelések feldolgozása és kiszállítása.</li>
+                <li>Kapcsolattartás és ügyfélszolgálat biztosítása.</li>
+                <li>Marketing kampányok és promóciós ajánlatok küldése (csak beleegyezés esetén).</li>
+                <li>A weboldal működésének fejlesztése és technikai hibák elhárítása.</li>
             </ul>
         </section>
         <section>
-            <h2 class="text-xl font-semibold text-blue-600">4. Fizetés</h2>
-            <p>Fizetési lehetőségek:</p>
+            <h2 class="text-xl font-semibold text-blue-600">Adatok Tárolása</h2>
+            <p>A személyes adatokat a következő módon és időtartamig tároljuk:</p>
             <ul class="list-disc ml-6">
-                <li><strong>Kártyás fizetés:</strong> Nem fogadunk el Monopoly-pénzt, bármennyire is vicces lenne.</li>
-                <li><strong>Banki átutalás:</strong> Ez az opció csak azoknak, akik szeretik a számok világát.</li>
-                <li><strong>Utánvét:</strong> Ha személyesen akarod érezni a pénz súlyát, mielőtt megválnál tőle.</li>
+                <li><strong>Megrendelések:</strong> A vásárlástól számított 5 évig a jogszabályi előírásoknak megfelelően.</li>
+                <li><strong>Technikai adatok:</strong> Legfeljebb 1 évig.</li>
+                <li><strong>Marketing adatok:</strong> Az Ön hozzájárulásának visszavonásáig.</li>
             </ul>
         </section>
         <section>
-            <h2 class="text-xl font-semibold text-blue-600">5. Garancia</h2>
-            <p>Termékeinkhez garanciát vállalunk, mert mi sem szeretjük, ha valami elromlik. Ha mégis meghibásodik, nyugodtan keress minket, nem harapunk. (Csak akkor, ha az ügyfélszolgálati kávéfőző épp rossz.)</p>
+            <h2 class="text-xl font-semibold text-blue-600">Harmadik Felek</h2>
+            <p>Adatait kizárólag az alábbi harmadik felekkel osztjuk meg, a szükséges mértékben:</p>
+            <ul class="list-disc ml-6">
+                <li><strong>Futárszolgálatok:</strong> GLS, MPL, FedEx a rendelések kiszállításához.</li>
+                <li><strong>Fizetési szolgáltatók:</strong> PayPal, Stripe a biztonságos fizetések lebonyolításához.</li>
+                <li><strong>Hatóságok:</strong> Csak törvényes megkeresés esetén.</li>
+            </ul>
         </section>
         <section>
-            <h2 class="text-xl font-semibold text-blue-600">6. Panaszkezelés</h2>
-            <p>Ha valami nem stimmel, kérjük, ne szétkiabáld az interneten, hanem előbb jelezd nekünk! Mindent megteszünk, hogy megoldjuk a problémát, akár még bűvésztrükköket is bevetünk, ha szükséges.</p>
+            <h2 class="text-xl font-semibold text-blue-600">Az Ön Jogai</h2>
+            <p>Önnek jogában áll:</p>
+            <ul class="list-disc ml-6">
+                <li>Hozzáférni az általunk tárolt személyes adataihoz.</li>
+                <li>Helyesbíttetni pontatlan vagy hiányos adatokat.</li>
+                <li>Töröltetni az adatait, amennyiben azok tárolása már nem szükséges.</li>
+                <li>Kérni adatainak korlátozását vagy feldolgozásának megszüntetését.</li>
+                <li>Panaszt benyújtani az illetékes adatvédelmi hatóságnál.</li>
+            </ul>
         </section>
         <section>
-            <h2 class="text-xl font-semibold text-blue-600">7. Záró rendelkezések</h2>
-            <p>Ezen feltételek azért vannak, hogy mindenki boldogan és elégedetten használhassa a PixelForge szolgáltatásait. Ha pedig mégsem sikerült elmosolyodnod, küldünk egy virtuális ölelést, mert minden jobb lesz tőle!</p>
+            <h2 class="text-xl font-semibold text-blue-600">Kapcsolat</h2>
+            <p>Ha bármilyen kérdése vagy észrevétele van adatkezelési gyakorlatunkkal kapcsolatban, kérjük, lépjen velünk kapcsolatba az alábbi elérhetőségeken:</p>
+            <p><strong>Email:</strong> privacy@pixelforge.hu</p>
+            <p><strong>Telefon:</strong> +36 1 234 5678</p>
+            <p><strong>Cím:</strong> 1234 Budapest, Gamer utca 42.</p>
         </section>
     </div>
 </main>

@@ -9,6 +9,7 @@ $conn = new mysqli($servername, $dbUsername, $dbPassword, $dbname);
 if ($conn->connect_error) {
     die(json_encode(['success' => false, 'message' => 'Connection failed: ' . $conn->connect_error]));
 }
+
 // Check if the user is logged in
 if (isset($_COOKIE['auth_token'])) {
     $token = $_COOKIE['auth_token'];
@@ -19,10 +20,12 @@ if (isset($_COOKIE['auth_token'])) {
     $stmt->execute();
 
     // Delete the cookie
-    setcookie('auth_token', '', time() - 3600, '/', '', true, true);
+    setcookie('auth_token', '', time() - 3600, '/');
 }
 
-// Redirect to the page where logout occurred
-$redirect = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'index.php';
-header("Location: $redirect");
+// Close the database connection
+$conn->close();
+
+// Redirect to the home page
+header("Location: index.php");
 exit();

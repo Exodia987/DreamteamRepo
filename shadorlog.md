@@ -11,11 +11,12 @@ Ez a napló részletesen dokumentálja a projekten töltött időmet, a dátumok
 | 2024-11-13  | 3 óra     | Megrendelő lap és back-end |
 | 2024-11-14  | 3 óra     | Termék oldala és shopping cart prot |
 | 2024-11-16  | 4 óra     | Termék oldala, shopping cart, kategóriák és redesign |
+| 2024-11-18  | 1 óra     | Login, regisztráció sórán hitelesítás és cart fix |
 
 
 ## Összesített idő
 
-Összesen eddig: **16 óra**
+Összesen eddig: **17 óra**
 
 ## Kiemelt célok
 
@@ -26,6 +27,7 @@ Ez a napló részletesen dokumentálja a projekten töltött időmet, a dátumok
 5. **SQL Szerver felépítése és annak működése** - A webshop tudjon kommunikálni a telephelyen lévő SQL adadtbázis szerverrel. És annak folyamatos frissítése
 6. **JSON HTTP POST** - A megrendelás egy JSON fájlt küldjön a telephelyekre melyel lehet monitorozni a rendeléseket
 7. **DNS Szerver** - Egy szervergép hostoljon DNS szervert. rendeles.local-on lehessen követni a rendeléseket amit az SQL szerveren fog majd fetchelni.
+8. **Felhőszolgáltatáson SQL szerver** UNAS shop kialakítása
  
 ## Teljesített célok
 
@@ -44,4 +46,4 @@ Cégünk alap elve, hogy a mai gamereket kitudjok minőségi termékekkel jó á
 
 ### Termék feltöltés
 
-Termék feltöltése a shador.hu/vizsgaremek/feltoltes oldalon lehet megtenni. Ott meglehet adni a termék nevét, leírását, árát, kategóriáját, stock-ját (mennyi van készleten), és a hozzátartozó képeket lehet csatolni. Ezen az oldalon szintúgy lehet módosítani már feltöltött termékeket.
+Termék feltöltése a shador.hu/vizsgaremek/feltoltes oldalon lehet megtenni. Ott meglehet adni a termék nevét, leírását, árát, kategóriáját, stock-ját (mennyi van készleten), és a hozzátartozó képeket lehet csatolni. Ezen az oldalon szintúgy lehet módosítani már feltöltött termékeket. Minden terméknek van egy id-ja ami alapján lehet az oldalon egyszerúbben és automatizáltan megjeleníteni és a rendelés során azonosítani a terméket.

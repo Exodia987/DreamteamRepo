@@ -245,66 +245,25 @@ $categoryIcons = [
         </div>
         
         <div class="flex items-center space-x-4">
-            <a href="cart" class="text-white hover:text-blue-500 transition duration-300 relative">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 004 0z"></path></svg>
-                <span id="cart-count" class="absolute -top-2 -right-2 bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                    <?php echo getCartCount(); ?>
-                </span>
-            </a>
-            <a href="login.php" class="text-white hover:text-blue-500 transition duration-300">Bejelentkezés</a>
-            <a href="register.php" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">Regisztráció</a>
-        </div>
+    <a href="cart" class="text-white hover:text-blue-500 transition duration-300 relative">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 004 0z"></path></svg>
+        <span id="cart-count" class="absolute -top-2 -right-2 bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+            <?php echo getCartCount(); ?>
+        </span>
+    </a>
+    <?php if ($username): ?>
+        <span class="text-white"><?php echo htmlspecialchars($username); ?></span>
+        <a href="logout.php" class="text-white hover:text-blue-500 transition duration-300">Kijelentkezés</a>
+    <?php else: ?>
+        <a href="login.php?ref=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>" class="text-white hover:text-blue-500 transition duration-300">Bejelentkezés</a>
+        <a href="register.php?ref=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">Regisztráció</a>
+    <?php endif; ?>
+</div>
     </nav>
 </header>
-<main class="container mx-auto px-4 py-10 bg-white shadow-md rounded-lg">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Általános Szerződési Feltételek</h1>
-    <div class="space-y-8 text-gray-700 leading-relaxed">
-        <section>
-            <h2 class="text-xl font-semibold text-blue-600">1. Bevezetés</h2>
-            <p>Kedves Látogató! Gratulálunk, hogy sikeresen eljutottál ide, ahol minden betű izgalmasabb, mint egy unalmas pénzügyi kimutatás! Az alábbi szabályok azért vannak, hogy mindannyian békésen, barátságban vásárolhassunk.</p>
-        </section>
-        <section>
-            <h2 class="text-xl font-semibold text-blue-600">2. Vásárlási Feltételek</h2>
-            <p>Ha nálunk vásárolsz, a következő dolgokat vállalod:</p>
-            <ul class="list-disc ml-6">
-                <li>Nem próbálod meg ellopni a kosaradat a digitális térből (mert mi észrevesszük!).</li>
-                <li>A rendelés leadása után nem küldesz nekünk füstjeleket; e-mailben sokkal gyorsabb válaszolni.</li>
-                <li>Tudomásul veszed, hogy a termék képei nem tartalmazzák a macskát, aki rajta ül (bár megrendeléskor kedvesen mosolyog rád).</li>
-            </ul>
-        </section>
-        <section>
-            <h2 class="text-xl font-semibold text-blue-600">3. Szállítási Feltételek</h2>
-            <p>Szállításunk gyorsabb, mint ahogy a reggeli kávéd kihűl (feltéve, ha nem reggel rendelsz). Ha valamiért mégis késnénk, ígérjük, hogy hibáinkat sok szeretettel és egy kávéval pótoljuk (legalábbis gondolatban).</p>
-            <ul class="list-disc ml-6">
-                <li><strong>GLS:</strong> Pontos és gyors, bár sajnos nem űrhajóval érkezik.</li>
-                <li><strong>MPL:</strong> A magyar posta, de mi bízunk benne, hogy mosolyogva kopogtatnak az ajtódon.</li>
-                <li><strong>FedEx:</strong> Amilyen gyors, olyan profi. Szinte már féltékenyek vagyunk rájuk.</li>
-            </ul>
-        </section>
-        <section>
-            <h2 class="text-xl font-semibold text-blue-600">4. Fizetés</h2>
-            <p>Fizetési lehetőségek:</p>
-            <ul class="list-disc ml-6">
-                <li><strong>Kártyás fizetés:</strong> Nem fogadunk el Monopoly-pénzt, bármennyire is vicces lenne.</li>
-                <li><strong>Banki átutalás:</strong> Ez az opció csak azoknak, akik szeretik a számok világát.</li>
-                <li><strong>Utánvét:</strong> Ha személyesen akarod érezni a pénz súlyát, mielőtt megválnál tőle.</li>
-            </ul>
-        </section>
-        <section>
-            <h2 class="text-xl font-semibold text-blue-600">5. Garancia</h2>
-            <p>Termékeinkhez garanciát vállalunk, mert mi sem szeretjük, ha valami elromlik. Ha mégis meghibásodik, nyugodtan keress minket, nem harapunk. (Csak akkor, ha az ügyfélszolgálati kávéfőző épp rossz.)</p>
-        </section>
-        <section>
-            <h2 class="text-xl font-semibold text-blue-600">6. Panaszkezelés</h2>
-            <p>Ha valami nem stimmel, kérjük, ne szétkiabáld az interneten, hanem előbb jelezd nekünk! Mindent megteszünk, hogy megoldjuk a problémát, akár még bűvésztrükköket is bevetünk, ha szükséges.</p>
-        </section>
-        <section>
-            <h2 class="text-xl font-semibold text-blue-600">7. Záró rendelkezések</h2>
-            <p>Ezen feltételek azért vannak, hogy mindenki boldogan és elégedetten használhassa a PixelForge szolgáltatásait. Ha pedig mégsem sikerült elmosolyodnod, küldünk egy virtuális ölelést, mert minden jobb lesz tőle!</p>
-        </section>
-    </div>
-</main>
+<main>
 
+</main>
 <footer class="bg-gray-900 text-white py-8">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
