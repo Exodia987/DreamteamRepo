@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rendelés visszaigazolás - PixelForge</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f0f0f0; margin: 0; padding: 0;">
+    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
+        <div style="background-color: #4a5568; color: #ffffff; padding: 20px; text-align: center;">
+            <h1 style="margin: 0;">Rendelés visszaigazolás</h1>
+        </div>
+        <div style="padding: 20px;">
+            <p>Kedves {CUSTOMER_NAME},</p>
+            <p>Köszönjük a rendelését! Az alábbiakban találja a rendelés részleteit:</p>
+            <h2 style="color: #4a5568;">Rendelés azonosító: {ORDER_ID}</h2>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                <tr>
+                    <th style="border: 1px solid #e2e8f0; padding: 10px; text-align: left; background-color: #edf2f7;">Termék</th>
+                    <th style="border: 1px solid #e2e8f0; padding: 10px; text-align: left; background-color: #edf2f7;">Kép</th>
+                    <th style="border: 1px solid #e2e8f0; padding: 10px; text-align: left; background-color: #edf2f7;">Mennyiség</th>
+                    <th style="border: 1px solid #e2e8f0; padding: 10px; text-align: left; background-color: #edf2f7;">Ár</th>
+                </tr>
+                {ORDER_ITEMS}
+            </table>
+            <p style="font-size: 18px; font-weight: bold; color: #4a5568;">Végösszeg: {TOTAL_AMOUNT} Ft</p>
+            <h3 style="color: #4a5568;">Szállítási adatok:</h3>
+            <p style="background-color: #f7fafc; padding: 10px; border-radius: 5px;">
+                {SHIPPING_NAME}<br>
+                {SHIPPING_ADDRESS}<br>
+                {SHIPPING_CITY}, {SHIPPING_ZIP}<br>
+                {SHIPPING_COUNTRY}
+            </p>
+            <h3 style="color: #4a5568;">Fizetési mód:</h3>
+            <p style="background-color: #f7fafc; padding: 10px; border-radius: 5px;">{PAYMENT_METHOD}</p>
+            <p>Ha bármilyen kérdése van a rendeléssel kapcsolatban, kérjük, vegye fel velünk a kapcsolatot.</p>
+            <p>Üdvözlettel,<br>PixelForge Csapata</p>
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="https://shador.hu/vizsgaremek/pixelforge" style="background-color: #4a5568; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Látogasson el webshopunkba</a>
+            </div>
+        </div>
+        <div style="background-color: #f7fafc; padding: 20px; text-align: center; font-size: 12px;">
+            <p>&copy; 2024 PixelForge. Minden jog fenntartva.</p>
+        </div>
+    </div>
+</body>
+</html>
+

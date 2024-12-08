@@ -170,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     Elfogadom az <a href="aszf.php">ÁSZF</a> (Általános Szerződési Feltételek) 
                 </label>
             </div>
-            <div class="g-recaptcha" data-sitekey="6LfcE2wqAAAAAFwolQgILt5OParY_5OW12xyuUnE"></div>
+            <div class="g-recaptcha" data-sitekey="6LdDE2wqAAAAAHbMo2RZ1cmuwcLrcbyxjyCwGNU_"></div>
             <button type="submit">Regisztrálás</button>
         </form>
         <?php if ($message): ?>

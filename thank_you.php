@@ -1,6 +1,7 @@
 <?php
-error_reporting(E_ALL);
 ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 $servername = "localhost";
 $dbUsername = "root";
@@ -9,20 +10,19 @@ $dbname = "user_auth";
 
 $conn = new mysqli($servername, $dbUsername, $dbPassword, $dbname);
 if ($conn->connect_error) {
-    die("Kapcsolódási hiba: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 
-// Check for logged-in user
 $username = '';
 $isLoggedIn = false;
-if (isset($_COOKIE['auth_token'])) {
-    $stmt = $conn->prepare("SELECT username FROM users WHERE token = ?");
-    $stmt->bind_param("s", $_COOKIE['auth_token']);
+if (isset($_COOKIE['auth_token']) && isset($_COOKIE['username'])) {
+    $stmt = $conn->prepare("SELECT username FROM users WHERE token = ? AND username = ?");
+    $stmt->bind_param("ss", $_COOKIE['auth_token'], $_COOKIE['username']);
     $stmt->execute();
     $result = $stmt->get_result();
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-        $username = htmlspecialchars($user['username']);
+        $username = htmlspecialchars($_COOKIE['username']);
         $isLoggedIn = true;
     }
 }
@@ -95,6 +95,20 @@ function getProducts($limit = null, $random = false, $category = null, $productI
     return array_values($products);
 }
 
+// Fetch categories
+function getCategories() {
+    global $conn;
+    $sql = "SELECT DISTINCT category FROM products ORDER BY category";
+    $result = $conn->query($sql);
+    $categories = array();
+    
+    while ($row = $result->fetch_assoc()) {
+        $categories[] = $row['category'];
+    }
+    
+    return $categories;
+}
+
 // Get cart items from cookie
 function getCartItems() {
     if (isset($_COOKIE['cart'])) {
@@ -103,77 +117,41 @@ function getCartItems() {
     return array();
 }
 
-// Remove item from cart
-function removeFromCart($productId) {
-    $cart = getCartItems();
-    if (isset($cart[$productId])) {
-        unset($cart[$productId]);
-        setcookie('cart', json_encode($cart), time() + (86400 * 30), "/");
-    }
-}
-
-// Update cart item quantity
-function updateCartItemQuantity($productId, $quantity) {
-    $cart = getCartItems();
-    if ($quantity > 0) {
-        $cart[$productId] = $quantity;
-    } else {
-        unset($cart[$productId]);
-    }
-    setcookie('cart', json_encode($cart), time() + (86400 * 30), "/");
-}
-
-// Get cart total
-function getCartTotal() {
-    $total = 0;
-    $cartItems = getCartItems();
-    foreach ($cartItems as $productId => $quantity) {
-        $product = getProducts(1, false, null, $productId)[0];
-        $total += $product['price'] * $quantity;
-    }
-    return $total;
-}
-
 // Function to get cart count
 function getCartCount() {
     $cartItems = getCartItems();
     return array_sum($cartItems);
 }
 
-// Handle cart actions
-if (isset($_POST['action'])) {
-    $action = $_POST['action'];
-    $productId = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
-    $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 1;
+$featuredProducts = getProducts(4, true);
+$categories = getCategories();
 
-    switch ($action) {
-        case 'remove':
-            removeFromCart($productId);
-            break;
-        case 'update':
-            updateCartItemQuantity($productId, $quantity);
-            break;
-    }
+// Get the current category from the URL parameter
+$currentCategory = isset($_GET['category']) ? $_GET['category'] : null;
+$products = $currentCategory ? getProducts(null, false, $currentCategory) : $featuredProducts;
 
-    // Redirect to prevent form resubmission
-    header("Location: cart.php");
-    exit();
-}
-
-$cartItems = getCartItems();
-$cartTotal = getCartTotal();
+// Category icons (you may need to adjust these or use actual image URLs)
+$categoryIcons = [
+    'Processzor' => 'fas fa-microchip',
+    'Videókártya' => 'fas fa-tv',
+    'Alaplap' => 'fas fa-server',
+    'Memória' => 'fas fa-memory',
+    'Tárhely' => 'fas fa-hdd',
+    'Periféria' => 'fas fa-keyboard',
+    'Monitor' => 'fas fa-desktop',
+    'Ház' => 'fas fa-box',
+];
+$order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
 ?>
-
 <!DOCTYPE html>
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kosár - PixelForge</title>
+    <title>Köszönjük a rendelést - PixelForge</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
-<body class="font-roboto bg-gray-100">
+<body class="bg-gray-100">
 <header class="bg-gray-900 text-white shadow-lg relative z-10">
     <nav class="container mx-auto px-4 py-4 flex flex-wrap items-center justify-between">
         <a href="https://shador.hu/vizsgaremek/pixelforge" class="text-2xl font-bold text-blue-500">PixelForge</a>
@@ -229,47 +207,16 @@ $cartTotal = getCartTotal();
         </div>
     </nav>
 </header>
-
-    <main class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-8">Kosár</h1>
-        <?php if (empty($cartItems)): ?>
-            <p>A kosár üres.</p>
-        <?php else: ?>
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <?php foreach ($cartItems as $productId => $quantity): 
-                    $product = getProducts(1, false, null, $productId)[0];
-                ?>
-                    <div class="flex items-center justify-between border-b py-4">
-                        <div class="flex items-center">
-                            <img src="<?php echo htmlspecialchars($product['images'][0]); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="w-16 h-16 object-cover mr-4">
-                            <div>
-                                <h3 class="font-semibold"><?php echo htmlspecialchars($product['name']); ?></h3>
-                                <p class="text-gray-600"><?php echo number_format($product['price'], 0, ',', ' '); ?> Ft</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <form action="cart.php" method="POST" class="flex items-center">
-                                <input type="hidden" name="action" value="update">
-                                <input type="hidden" name="product_id" value="<?php echo $productId; ?>">
-                                <input type="number" name="quantity" value="<?php echo $quantity; ?>" min="1" class="w-16 text-center border rounded-l px-2 py-1">
-                                <button type="submit" class="bg-blue-500 text-white px-2 py-1 rounded-r hover:bg-blue-600">Frissítés</button>
-                            </form>
-                            <form action="cart.php" method="POST" class="ml-4">
-                                <input type="hidden" name="action" value="remove">
-                                <input type="hidden" name="product_id" value="<?php echo $productId; ?>">
-                                <button type="submit" class="text-red-500 hover:text-red-700">Törlés</button>
-                            </form>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-                <div class="mt-6 text-right">
-                    <p class="text-xl font-semibold">Összesen: <?php echo number_format($cartTotal, 0, ',', ' '); ?> Ft</p>
-                    <a href="checkout.php" class="bg-green-500 text-white px-6 py-2 rounded mt-4 inline-block hover:bg-green-600">Fizetés</a>
-                </div>
-            </div>
-        <?php endif; ?>
-    </main>
-
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <h1 class="text-2xl font-bold mb-4">Köszönjük a rendelését!</h1>
+            <p class="mb-4">Az Ön rendelési azonosítója: <strong><?php echo $order_id; ?></strong></p>
+            <p class="mb-4">A rendelés visszaigazolását elküldtük e-mailben.</p>
+            <a href="index.php" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Vissza a főoldalra
+            </a>
+        </div>
+    </div>
     <footer class="bg-gray-900 text-white py-8">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -282,10 +229,10 @@ $cartTotal = getCartTotal();
                 <div>
                     <h3 class="text-lg font-semibold mb-4">Információk</h3>
                     <ul>
-                        <li><a href="#" class="hover:text-blue-500 transition duration-300">Szállítás</a></li>
-                        <li><a href="#" class="hover:text-blue-500 transition duration-300">Garancia</a></li>
-                        <li><a href="#" class="hover:text-blue-500 transition duration-300">ÁSZF</a></li>
-                        <li><a href="#" class="hover:text-blue-500 transition duration-300">Adatvédelem</a></li>
+                        <li><a href="szallitas" class="hover:text-blue-500 transition duration-300">Szállítás</a></li>
+                        <li><a href="garancia" class="hover:text-blue-500 transition duration-300">Garancia</a></li>
+                        <li><a href="aszf" class="hover:text-blue-500 transition duration-300">ÁSZF</a></li>
+                        <li><a href="adatvedelem" class="hover:text-blue-500 transition duration-300">Adatvédelem</a></li>
                     </ul>
                 </div>
                 <div>
@@ -303,8 +250,6 @@ $cartTotal = getCartTotal();
             </div>
         </div>
     </footer>
-
-    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
 </body>
 </html>
 
