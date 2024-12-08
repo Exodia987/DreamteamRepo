@@ -12,11 +12,12 @@ Ez a napló részletesen dokumentálja a projekten töltött időmet, a dátumok
 | 2024-11-14  | 3 óra     | Termék oldala és shopping cart prot |
 | 2024-11-16  | 4 óra     | Termék oldala, shopping cart, kategóriák és redesign |
 | 2024-11-18  | 1 óra     | Login, regisztráció sórán hitelesítás és cart fix |
+| 2024-12-08  | 4 óra     | Checkout + E-mail |
 
 
 ## Összesített idő
 
-Összesen eddig: **17 óra**
+Összesen eddig: **21 óra**
 
 ## Kiemelt célok
 
@@ -37,6 +38,8 @@ Ez a napló részletesen dokumentálja a projekten töltött időmet, a dátumok
 - [x] Kosár :tada:
 - [x] Kategóriák :tada:
 - [x] Kész Design :tada:
+- [x] Checkout + E-mail, rendelés adatai SQL-ben (local-on egyenlőre) :tada:
+- [x] JSON fájl mentése :tada:
 
 ## Dokumentációs szövegek
 
@@ -47,3 +50,7 @@ Cégünk alap elve, hogy a mai gamereket kitudjok minőségi termékekkel jó á
 ### Termék feltöltés
 
 Termék feltöltése a shador.hu/vizsgaremek/feltoltes oldalon lehet megtenni. Ott meglehet adni a termék nevét, leírását, árát, kategóriáját, stock-ját (mennyi van készleten), és a hozzátartozó képeket lehet csatolni. Ezen az oldalon szintúgy lehet módosítani már feltöltött termékeket. Minden terméknek van egy id-ja ami alapján lehet az oldalon egyszerúbben és automatizáltan megjeleníteni és a rendelés során azonosítani a terméket.
+
+### Checkout
+
+Az oldalon működóképes a kosár és az abban lévő termékek kifizetése. A termékek adatai és a vásárló adatai a webshopot üzemeltető szerverén és a raktár fizikai szerverén lévő SQL adatbázisra menti el. Ennek segítségével, hogy 2 helyre menti el az adatokat, adatbiztonságot tudunk biztosítani, mivel a webshop szervere egy backup-ot nyújt míg a raktár szervere pedig csak is belső hálózaton történő hozzáférést biztosít. Így mind a raktári és logisztikai dolgozóink bizalmasan tudják kezelni vásárlóink adait és feldolgozni. A fizetés után az automatizált rendszerünk küld a vásárlónak egy visszaigazoló E-mailt ahol megtudja tekinteni az adatokat a rendelésről. 
