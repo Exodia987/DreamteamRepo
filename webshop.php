@@ -192,14 +192,14 @@ $products = $currentCategory ? getProducts(null, false, $currentCategory) : $fea
 
 // Category icons (you may need to adjust these or use actual image URLs)
 $categoryIcons = [
-    'Processzor' => 'fas fa-microchip',
-    'Videókártya' => 'fas fa-tv',
-    'Alaplap' => 'fas fa-server',
-    'Memória' => 'fas fa-memory',
-    'Tárhely' => 'fas fa-hdd',
-    'Periféria' => 'fas fa-keyboard',
-    'Monitor' => 'fas fa-desktop',
-    'Ház' => 'fas fa-box',
+    'Egerek' => 'fas fa-computer-mouse',
+    'Egérpadok' => 'far fa-computer-mouse',
+    'Fejhallgatók' => 'fas fa-headphones',
+    'GamerPC-k' => 'fas fa-computer-speaker',
+    'Kontrollerek' => 'fas fa-gamepad',
+    'Billentyűzetek' => 'fas fa-keyboard',
+    'Monitorok' => 'fas fa-desktop',
+    'Konzol ok' => 'fas fa-game-console-handheld',
 ];
 
 ?>
@@ -212,6 +212,7 @@ $categoryIcons = [
     <title>PixelForge - Prémium Gamer Hardverek</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous"></script>
 </head>
 <body class="font-roboto bg-gray-100">
@@ -341,6 +342,22 @@ $categoryIcons = [
                     </a>
                 </div>
             </section>
+            <section class="bg-gray-200 py-16">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">Ügyfélszolgálatunk több nyelven áll rendelkezésedre</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto text-center">Legyen szó magyar, angol, német vagy „kézzel-lábbal” nyelvről, segítünk, hogy a csomagod simán megérkezzen!</p>
+                </div>
+            </section>
+            <section class="relative">
+                <img src="images/Hungary.png" alt="térkép" class="w-full h-[900px] object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center space-y-6">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center leading-tight">Hazai prémium szolgáltatás</h1>
+                    <p class="text-xl md:text-2xl text-white text-center">A schengeni övezet jóvoltából már nemcsak a nagyi lekvárja utazik határokon át!</p>
+                    <a href="szallitas" class="px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition duration-300">
+                        Szállítás
+                    </a>
+                </div>
+            </section>
             <section class="py-16 bg-blue-600 text-white">
                 <div class="container mx-auto px-4">
                     <h2 class="text-3xl font-bold mb-8 text-center">Hírlevélre feliratkozás</h2>
@@ -376,10 +393,8 @@ $categoryIcons = [
                 <div>
                     <h3 class="text-lg font-semibold mb-4">Kövess minket</h3>
                     <div class="flex space-x-4">
-                        <a href="#" class="hover:text-blue-500 transition duration-300"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="hover:text-blue-500 transition duration-300"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="hover:text-blue-500 transition duration-300"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="hover:text-blue-500 transition duration-300"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.facebook.com/people/PixelForge/61570145195171/" class="hover:text-blue-500 transition duration-300"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/pixelforgewebshop/" class="hover:text-blue-500 transition duration-300"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
             </div>

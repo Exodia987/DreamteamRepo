@@ -29,9 +29,16 @@ Ez a napló részletesen dokumentálja a projekten töltött időmet, a dátumok
 6. **JSON HTTP POST** - A megrendelás egy JSON fájlt küldjön a telephelyekre melyel lehet monitorozni a rendeléseket
 7. **DNS Szerver** - Egy szervergép hostoljon DNS szervert. rendeles.local-on lehessen követni a rendeléseket amit az SQL szerveren fog majd fetchelni.
 8. **Felhőszolgáltatáson SQL szerver** UNAS shop kialakítása
+9. **Linux server setup** Teljes dokumentáció készítése egy működő Linux szerverről
+### DHCP 
+### DNS
+### HTTPS 
+### Automatizált mentés
+10. **Gant diagram készítése** Egy gant diagram vagy hasonló készítése, hogy demonstráljuk a belefektetett időt és energiát
  
 ## Teljesített célok
 
+- [x] Linux: HTTPS :tada:
 - [x] Webshop "skeletonja" :tada:
 - [x] Regisztráció és bejelentkező rendszer, cookie, Email küldés :tada:
 - [x] Termék feltöltése :tada:
