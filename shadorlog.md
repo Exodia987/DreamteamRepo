@@ -32,7 +32,7 @@ Ez a napló részletesen dokumentálja a projekten töltött időmet, a dátumok
 9. **Linux server setup** Teljes dokumentáció készítése egy működő Linux szerverről
 **DHCP**
 **DNS**
-**HTTPS** 
+~~HTTPS~~
 **Automatizált mentés**
 10. **Gant diagram készítése** Egy gant diagram vagy hasonló készítése, hogy demonstráljuk a belefektetett időt és energiát
  
