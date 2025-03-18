@@ -117,6 +117,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($stmt->execute()) {
                         $order_id = $conn->insert_id;
                         
+                        // Add order ID to the order data
+                        $order_data['order_id'] = $order_id;
+                        $order_data['order_date'] = date('Y-m-d H:i:s');
+                        
+                        // Create megrendelesek directory with absolute path
+                        $order_dir = __DIR__ . '/megrendelesek';
+                        error_log("Using directory path: " . $order_dir);
+                        
+                        if (!file_exists($order_dir)) {
+                            error_log("Directory doesn't exist, creating it now");
+                            $mkdir_result = mkdir($order_dir, 0777, true);
+                            if (!$mkdir_result) {
+                                error_log("Failed to create directory: " . error_get_last()['message']);
+                            } else {
+                                // Ensure directory has proper permissions
+                                chmod($order_dir, 0777);
+                                error_log("Directory created successfully with permissions 0777");
+                            }
+                        }
+                        
+                        // Save order data as JSON file
+                        $json_filename = $order_dir . '/order_' . $order_id . '_' . date('Ymd_His') . '.json';
+                        $json_content = json_encode($order_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                        
+                        if ($json_content === false) {
+                            error_log("JSON encoding failed: " . json_last_error_msg());
+                        } else {
+                            // Use file locking for safer file writing
+                            $fp = fopen($json_filename, 'w');
+                            if ($fp) {
+                                if (flock($fp, LOCK_EX)) { // Exclusive lock
+                                    $bytes_written = fwrite($fp, $json_content);
+                                    if ($bytes_written !== false) {
+                                        error_log("Order JSON saved successfully to: " . $json_filename . " (" . $bytes_written . " bytes)");
+                                        $json_saved = true;
+                                    } else {
+                                        error_log("Failed to write to file: " . error_get_last()['message']);
+                                    }
+                                    flock($fp, LOCK_UN); // Release lock
+                                } else {
+                                    error_log("Could not get lock on file: " . $json_filename);
+                                }
+                                fclose($fp);
+                            } else {
+                                error_log("Could not open file for writing: " . $json_filename . " - " . error_get_last()['message']);
+                            }
+                        }
+                        
                         // Send confirmation email
                         if (sendOrderConfirmationEmail($customer_details['email'], $customer_details['full_name'], $order_id, $order_data)) {
                             $success_message = "Rendelés sikeresen leadva. Visszaigazoló e-mail elküldve.";
@@ -759,6 +807,31 @@ function getProducts($limit = null, $random = false, $category = null, $productI
                 initialPaymentMethod.dispatchEvent(new Event('change'));
             }
         });
+        function saveOrderToJson(orderData) {
+            return new Promise((resolve, reject) => {
+                fetch('save-order.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Order saved successfully:', data);
+                        resolve(data);
+                    } else {
+                        console.error('Error saving order:', data.message);
+                        reject(new Error(data.message));
+                    }
+                })
+                .catch(error => {
+                    console.error('AJAX error:', error);
+                    reject(error);
+                });
+            });
+        }
     </script>
 </body>
 </html>

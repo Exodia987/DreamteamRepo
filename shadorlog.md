@@ -13,11 +13,13 @@ Ez a napló részletesen dokumentálja a projekten töltött időmet, a dátumok
 | 2024-11-16  | 4 óra     | Termék oldala, shopping cart, kategóriák és redesign |
 | 2024-11-18  | 1 óra     | Login, regisztráció sórán hitelesítás és cart fix |
 | 2024-12-08  | 4 óra     | Checkout + E-mail |
+| 2025-03-10  | 2 óra     | Dokumentáció oldal elkészítése |
+| 2025-03-18  | 2 óra     | Dokumentáció oldal bővítése |
 
 
 ## Összesített idő
 
-Összesen eddig: **21 óra**
+Összesen eddig: **25 óra**
 
 ## Kiemelt célok
 
