@@ -1,0 +1,19 @@
+{
+    "customer_details": {
+        "full_name": "jpiagjpajgp",
+        "email": "axel.oliver.polcz@umszki.hu",
+        "phone": "606060606060",
+        "address": "NYALLE UCA 555 XDDDD",
+        "city": "NEM",
+        "zip": "0244",
+        "country": "Magyarország"
+    },
+    "delivery_method": "pixelforge",
+    "payment_method": "cash_on_delivery",
+    "cart_items": {
+        "12": 1
+    },
+    "order_total": 116980,
+    "order_id": 27,
+    "order_date": "2025-03-18 12:05:25"
+}

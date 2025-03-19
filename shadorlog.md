@@ -15,11 +15,12 @@ Ez a napló részletesen dokumentálja a projekten töltött időmet, a dátumok
 | 2024-12-08  | 4 óra     | Checkout + E-mail |
 | 2025-03-10  | 2 óra     | Dokumentáció oldal elkészítése |
 | 2025-03-18  | 2 óra     | Dokumentáció oldal bővítése |
+| 2025-03-19  | 2 óra     | Linux Szerver Dokumentálása |
 
 
 ## Összesített idő
 
-Összesen eddig: **25 óra**
+Összesen eddig: **27 óra**
 
 ## Kiemelt célok
 

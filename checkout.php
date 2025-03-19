@@ -10,7 +10,7 @@ require '../vendor/autoload.php';
 // SMTP settings
 $mailHost = 'smtp.rackhost.hu';
 $mailUsername = 'pixelforge@shador.hu';
-$mailPassword = 'Keszenallok01';
+$mailPassword = 'Keszenallok01!';
 $mailPort = 465;
 
 $servername = "localhost";
