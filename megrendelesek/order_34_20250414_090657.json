@@ -1,0 +1,19 @@
+{
+    "customer_details": {
+        "full_name": "Olivér Axel",
+        "email": "ajksdhfhas@gmail.com",
+        "phone": "02312354135",
+        "address": "FASDFAS",
+        "city": "asdfrawet",
+        "zip": "1231",
+        "country": "asdafsgag"
+    },
+    "delivery_method": "pixelforge",
+    "payment_method": "cash_on_delivery",
+    "cart_items": {
+        "3": 1
+    },
+    "order_total": 13980,
+    "order_id": 34,
+    "order_date": "2025-04-14 09:06:57"
+}

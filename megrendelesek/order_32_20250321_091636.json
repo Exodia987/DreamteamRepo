@@ -1,0 +1,19 @@
+{
+    "customer_details": {
+        "full_name": "Pölcz Olivér",
+        "email": "axel.oliver.polcz@umszki.hu",
+        "phone": "0230303030",
+        "address": "NEM ADOM MEG XDDD",
+        "city": "Pomáz",
+        "zip": "2013",
+        "country": "Magyarország"
+    },
+    "delivery_method": "pixelforge",
+    "payment_method": "cash_on_delivery",
+    "cart_items": {
+        "18": 1
+    },
+    "order_total": 53980,
+    "order_id": 32,
+    "order_date": "2025-03-21 09:16:36"
+}

@@ -1,0 +1,17 @@
+{
+    "customer_details": {
+        "full_name": "Nagy Jenő",
+        "email": "nagyjeno50@gmail.com",
+        "phone": "063096969696",
+        "address": "Gamer utca 55. ",
+        "city": "Kockafalva",
+        "zip": "9050",
+        "country": "Magyarország"
+    },
+    "delivery_method": "pixelforge",
+    "payment_method": "cash_on_delivery",
+    "cart_items": [],
+    "order_total": 1990,
+    "order_id": 37,
+    "order_date": "2025-05-04 19:05:42"
+}

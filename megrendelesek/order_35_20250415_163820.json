@@ -1,0 +1,19 @@
+{
+    "customer_details": {
+        "full_name": "Olivér Axel Pölcz",
+        "email": "messihpps8@gmail.com",
+        "phone": "06205684213",
+        "address": "Damjanich u. 35",
+        "city": "Pomáz",
+        "zip": "2013",
+        "country": "Magyarország"
+    },
+    "delivery_method": "pixelforge",
+    "payment_method": "cash_on_delivery",
+    "cart_items": {
+        "17": 1
+    },
+    "order_total": 46990,
+    "order_id": 35,
+    "order_date": "2025-04-15 16:38:20"
+}
