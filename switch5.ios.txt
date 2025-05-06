@@ -1,0 +1,7 @@
+ena
+conf t
+ho LogisticsSW
+spanning-tree mode rapid-pvst
+int range f0/4-5
+switchport trunk encapsulation dot1q
+channel-group 1 mode on

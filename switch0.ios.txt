@@ -1,0 +1,30 @@
+ena 
+conf t
+ho SupportSW
+spanning-tree mode rapid-pvst
+int vlan 1 
+no shutdown
+vlan 10
+vlan 20
+vlan 30
+int vlan 10
+no shutdown
+int vlan 20
+no shutdown
+int vlan 30
+no shutdown
+int range f0/1-3
+switchport mode access
+switchport access vlan 30
+int range f0/5-6
+channel-group 2 mode active
+switchport mode trunk
+int range f0/7-8
+channel-group 1 mode passive
+switchport mode trunk
+int range f0/10-12
+switchport mode access
+switchport access vlan 30
+int g0/1
+switchport mode access
+switchport access vlan 30

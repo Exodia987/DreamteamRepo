@@ -1,0 +1,45 @@
+ena
+conf t
+ho Webshop
+int f0/1
+ip address 10.10.10.9 255.255.255.252
+no shutdown
+int f0/0.10
+encapsulation dot1q 10
+ip address 192.168.10.1 255.255.255.224
+int f0/0.20
+encapsulation dot1q 20
+ip address 192.168.20.1 255.255.255.224
+int f0/0.30
+encapsulation dot1q 30
+ip address 192.168.30.1 255.255.255.224
+int f0/0 
+no shutdown
+exit
+int tunnel1
+ip address 50.50.50.2 255.255.255.0 
+tunnel source f0/1
+tunnel destination 10.10.10.1
+router ospf1 
+network 10.10.10.8 0.0.0.3 area 1
+network 192.168.10.0 0.0.0.31 area 1
+network 192.168.20.0 0.0.0.31 area 1
+network 192.168.30.0 0.0.0.31 area 1
+network 50.50.50.0 0.0.0.255 area 1
+router id 1.1.1.1 
+exit
+do clear ip ospf process 
+yes
+ip dhcp pool pool10
+network 192.168.10.0 255.255.255.224
+default-router 192.168.10.1 
+dns-server 192.168.40.2
+ip dhcp pool pool20
+network 192.168.20.0 255.255.255.224
+default-router 192.168.20.1 
+dns-server 192.168.40.2
+ip dhcp pool pool30
+network 192.168.30.0 255.255.255.224
+default-router 192.168.30.1 
+dns-server 192.168.40.2
+ip routing

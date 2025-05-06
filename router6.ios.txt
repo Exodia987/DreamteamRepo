@@ -1,0 +1,15 @@
+ena
+conf t
+ho Tesztmuhely
+int f0/0
+ip address 192.168.50.2 255.255.255.224
+standby 1 ip 192.168.50.3
+standby 1 priority 110
+standby preempt
+no shutdown
+int s0/1/0
+ip address 172.16.10.6 255.255.255.252
+router ospf 1
+network 172.16.10.4 0.0.0.3 area 1
+network 192.168.50.0 0.0.0.31 area 1
+

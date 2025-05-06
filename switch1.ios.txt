@@ -1,0 +1,28 @@
+ena
+conf t
+ho ThingsSW
+int vlan 1 
+no shutdown
+vlan 10
+vlan 20
+vlan 30
+int vlan 10
+no shutdown
+int vlan 20
+no shutdown
+int vlan 30
+no shutdown
+int range f0/3-4
+channel-group 1 mode active
+switchport mode trunk
+switchport trunk allowed vlan 1,10,20,30
+int range f0/1-2
+switchport mode access 
+int f0/5-6
+channel-group 2 mode passive
+switchport mode trunk
+int g0/1
+switchport mode trunk
+switchport trunk allowed vlan 1,10,20,30
+exit
+spanning-tree mode rapid-pvst

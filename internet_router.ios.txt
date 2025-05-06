@@ -1,0 +1,19 @@
+ena
+conf t
+int f0/0
+ip address 10.10.10.6 255.255.255.252
+no shutdown
+int f0/1
+ip address 10.10.10.10 255.255.255.252
+no shutdown
+int s0/1/1
+ip address 10.10.10.2 255.255.255.252
+no shutdown
+exit
+router ospf1
+router-id 5.5.5.5
+network 10.10.10.0 0.0.0.3 area 1
+network 10.10.10.4 0.0.0.3 area 1
+network 10.10.10.8 0.0.0.3 area 1
+exit
+do clear ip ospf process

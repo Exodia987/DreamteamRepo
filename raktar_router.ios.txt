@@ -1,0 +1,25 @@
+ena
+conf t
+ho Raktar
+int f0/1
+ip address 191.168.40.1 255.255.255.224
+ip nat inside 
+no shutdown
+int s0/1/1
+ip add 10.10.10.1 255.255.255.252
+ip nat outside
+no shut
+int tunnel1
+ip address 50.50.50.1 255.255.255.0
+tunnel source s0/1/1
+tunnel destination 10.10.10.9
+exit
+router ospf1 
+network 192.168.40.0 0.0.0.31 area 1
+network 10.10.10.0 0.0.0.3 area 1
+network 50.50.50.0 0.0.0.255 area 1
+passive-interface f0/1
+exit
+ip nat inside source static 192.168.40.2 10.10.10.1
+acces-list 1 permit host 192.168.10.11
+
